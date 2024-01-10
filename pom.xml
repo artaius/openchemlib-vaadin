@@ -5,10 +5,10 @@
 
     <groupId>ch.artaios</groupId>
     <artifactId>openchemlib-vaadin</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>1.0.0</version>
     <name>OpenChemLib Vaadin Components</name>
     <description>Vaadin Java integration of OpenChemLib-js Components</description>
-
+    <url>https://github.com/artaius/openchemlib-vaadin</url>
     <licenses>
         <license>
             <name>BSD 3-Clause License</name>
