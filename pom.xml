@@ -22,11 +22,18 @@
         </developer>
     </developers>
 
-<!--    <scm>-->
-<!--        <connection>scm:git:git@github.com:Actelion/openchemlib.git</connection>-->
-<!--        <developerConnection>scm:git:git@github.com:Actelion/openchemlib.git</developerConnection>-->
-<!--        <url>https://github.com/Actelion/openchemlib</url>-->
-<!--    </scm>-->
+    <scm>
+        <connection>scm:git:git@github.com:artaius/openchemlib-vaadin.git</connection>
+        <developerConnection>scm:git:git@github.com:artaius/openchemlib-vaadin.git</developerConnection>
+        <url>https://github.com/artaius/openchemlib-vaadin</url>
+    </scm>
+
+    <distributionManagement>
+        <snapshotRepository>
+            <id>ossrh</id>
+            <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
+        </snapshotRepository>
+    </distributionManagement>
 
     <properties>
         <vaadin.version>24.3.1</vaadin.version>
@@ -329,6 +336,17 @@
                                 </configuration>
                             </execution>
                         </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.sonatype.plugins</groupId>
+                        <artifactId>nexus-staging-maven-plugin</artifactId>
+                        <version>1.6.13</version>
+                        <extensions>true</extensions>
+                        <configuration>
+                            <serverId>ossrh</serverId>
+                            <nexusUrl>https://s01.oss.sonatype.org/</nexusUrl>
+                            <autoReleaseAfterClose>true</autoReleaseAfterClose>
+                        </configuration>
                     </plugin>
                 </plugins>
             </build>
