@@ -20,7 +20,7 @@ Include dependency in your project:
 <dependency>
     <groupId>ch.artaios</groupId>
     <artifactId>openchemlib-vaadin</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>1.0.0</version>
 </dependency>
 ```
 
