@@ -1,0 +1,11 @@
+/* Styling for the whole element itself. */
+structure-view {
+    background-color: var(--lumo-contrast-10pct);
+    /*border: 1px solid var(--lumo-primary-color);*/
+    border-radius: var(--lumo-border-radius-l);
+
+    /*border-color: var(--lumo-box-shadow-l);*/
+    /*border-style: solid;*/
+    /*border-width: thin;*/
+    /*font-size: var(--lumo-font-size-s);*/
+}
