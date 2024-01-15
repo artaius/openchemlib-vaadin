@@ -10,22 +10,73 @@ name: Java CI with Maven
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "*" ]
   pull_request:
-    branches: [ "main" ]
-
+    branches: [ "*" ]
 jobs:
   build:
-
+    timeout-minutes: 30
     runs-on: ubuntu-latest
-
     steps:
-    - uses: actions/checkout@v3
-    - name: Set up JDK 17
-      uses: actions/setup-java@v3
-      with:
-        java-version: '17'
-        distribution: 'temurin'
-        cache: maven
-    - name: Build with Maven
-      run: mvn -P production -B package --file pom.xml
+      - id: checkout
+        name: Checkout sources
+        uses: actions/checkout@v3
+      - id: setup_jdk
+        name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: maven
+      - id: build_artifacts
+        name: Build Artifacts
+        run: |
+          mvn \
+            --no-transfer-progress \
+            --batch-mode \
+            --activate-profiles production \
+            -DskipTests=true \
+            package
+      - id: extract_version
+        name: Extract Version
+        if: ${{ github.ref_name == 'release' }}
+        run: |
+          echo "VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)" >> $GITHUB_ENV
+          mvn help:evaluate -Dexpression=project.version -q -DforceStdout
+      - id: setup-gpg
+        name: Install gpg secret key
+        if: ${{ github.ref_name == 'release' && !contains(env.VERSION,'SNAPSHOT') }}
+        run: |
+          # Install gpg secret key
+          cat <(echo -e "${{ secrets.OSSRH_GPG_SECRET_KEY }}") | gpg --batch --import
+      - id: publish_artifacts
+        name: Publish Artifacts
+        if: ${{ github.ref_name == 'release' && !contains(env.VERSION,'SNAPSHOT') }}
+        env:
+          MAVEN_USERNAME: ${{ secrets.OSSRH_USERNAME }}
+          MAVEN_PASSWORD: ${{ secrets.OSSRH_TOKEN }}
+        run: |
+          mvn \
+            --no-transfer-progress \
+            --batch-mode \
+            --activate-profiles production \
+            -DskipTests=true \
+            -Dgpg.passphrase=${{ secrets.OSSRH_GPG_SECRET_KEY_PASSWORD }} \
+            deploy
+      - id: create_tag
+        name: Create Tag
+        if: ${{ github.ref_name == 'release' && !contains(env.VERSION,'SNAPSHOT') }}
+        run: |
+          git config user.name "GitHub Actions"
+          git config user.email "github-actions@users.noreply.github.com"
+          git tag $VERSION
+          git push origin $VERSION
+      - id: create-release
+        name: Create Release
+        if: ${{ github.ref_name == 'release' && !contains(env.VERSION,'SNAPSHOT') }}
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ env.VERSION }}
+          files: |
+            target/*.jar
+            LICENSE          
