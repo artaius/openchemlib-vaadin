@@ -28,6 +28,7 @@ public class StructureEditorDialog extends VerticalLayout {
     }
 
     public StructureEditorDialog() {
+        this.setPadding(false);
         dialog = new Dialog("Structure Editor");
         structureView = new StructureView(true);
         structureEditor = new StructureEditor();
