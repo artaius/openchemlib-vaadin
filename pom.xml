@@ -5,7 +5,7 @@
 
     <groupId>ch.artaios</groupId>
     <artifactId>openchemlib-vaadin</artifactId>
-    <version>1.0.2-SNAPSHOT</version>
+    <version>1.0.1</version>
     <name>OpenChemLib Vaadin Components</name>
     <description>Vaadin Java integration of OpenChemLib-js Components</description>
     <url>https://github.com/artaius/openchemlib-vaadin</url>
