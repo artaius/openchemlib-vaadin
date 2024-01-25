@@ -1,5 +1,24 @@
 # OpenChemLib Vaadin 
-Vaadin Java integration of [OpenChemLib JS](https://github.com/cheminfo/openchemlib-js) components (which in turn is the JavaScript port of [OpenChemLib](https://github.com/Actelion/openchemlib)).
+Vaadin Java integration of the [OpenChemLib JS](https://github.com/cheminfo/openchemlib-js) components ([OpenChemLib JS](https://github.com/cheminfo/openchemlib-js) is the JavaScript port of [OpenChemLib](https://github.com/Actelion/openchemlib)).
+
+![StructureView](resources/view.png "StructureView")
+![StructureView](resources/editor.png "StructureEditor")
+
+## Usage
+Grab the precompiled jar file(s) from [Releases](https://github.com/artaius/openchemlib-vaadin/releases/latest) or
+add the following dependency to your project:
+```xml
+<dependency>
+    <groupId>ch.artaios</groupId>
+    <artifactId>openchemlib-vaadin</artifactId>
+    <version>1.0.1</version>
+</dependency>
+```
+
+To be able to properly run in development mode, don't forget to add package ```ch.artaios``` to ```src/main/resources/application.properties``` like follows:
+```properties
+vaadin.whitelisted-packages = com.vaadin,org.vaadin,dev.hilla,ch.artaios
+```
 
 ## Development instructions
 ### Starting the test/demo server
@@ -14,18 +33,3 @@ mvn vaadin:clean-frontend
 mvn install -Pproduction
 ```
 
-### Usage
-Include dependency in your project:
-```xml
-<dependency>
-    <groupId>ch.artaios</groupId>
-    <artifactId>openchemlib-vaadin</artifactId>
-    <version>1.0.0</version>
-</dependency>
-```
-
-To be able to properly run in development mode, don't forget to add package ch.artaios to ```src/main/resources/application.properties``` like follows:
-```properties
-vaadin.whitelisted-packages = com.vaadin,org.vaadin,dev.hilla,ch.artaios
-```
-Otherwise, in development mode element would be empty!
