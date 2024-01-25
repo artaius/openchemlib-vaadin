@@ -1,4 +1,7 @@
 # OpenChemLib Vaadin 
+[![](https://github.com/artaius/openchemlib-vaadin/actions/workflows/maven.yml/badge.svg?branch=release)](https://github.com/artaius/openchemlib-vaadin/actions)
+[![](https://img.shields.io/nexus/r/ch.artaios/openchemlib-vaadin?server=https%3A%2F%2Fs01.oss.sonatype.org)](https://central.sonatype.com/artifact/ch.artaios/openchemlib-vaadin)
+
 Vaadin Java integration of the [OpenChemLib JS](https://github.com/cheminfo/openchemlib-js) components ([OpenChemLib JS](https://github.com/cheminfo/openchemlib-js) is the JavaScript port of [OpenChemLib](https://github.com/Actelion/openchemlib)).
 
 ![StructureView](resources/view.png "StructureView")
@@ -20,7 +23,7 @@ To be able to properly run in development mode, don't forget to add package ```c
 vaadin.whitelisted-packages = com.vaadin,org.vaadin,dev.hilla,ch.artaios
 ```
 
-## Development instructions
+## Development
 ### Starting the test/demo server
 1. Run `mvn jetty:run`.
 2. Open http://localhost:8080 in the browser.
