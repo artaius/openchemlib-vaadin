@@ -1,0 +1,13 @@
+/* Styling for the whole element itself. */
+openchemlib-editor {
+    border: 1px var(--lumo-utility-border-style, solid) var(--lumo-utility-border-color, var(--lumo-contrast-10pct));
+    border-radius: var(--lumo-border-radius-s);
+    margin: var(--lumo-space-s);
+
+    /*border: 1px solid var(--lumo-primary-color);*/
+    /*border-radius: var(--lumo-border-radius-l);*/
+    /*border-color: var(--lumo-box-shadow-l);*/
+    /*border-style: solid;*/
+    /*border-width: */
+    /*font-size: var(--lumo-font-size-s);*/
+}

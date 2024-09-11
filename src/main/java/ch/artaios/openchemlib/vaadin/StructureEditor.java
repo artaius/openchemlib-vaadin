@@ -6,7 +6,7 @@ import com.vaadin.flow.component.dependency.JsModule;
 import com.vaadin.flow.component.dependency.NpmPackage;
 
 @Tag("structure-editor")
-@NpmPackage(value = "openchemlib", version = "8.7.2")
+@NpmPackage(value = "openchemlib", version = "8.15.0")
 @JsModule(value = "openchemlib/full.pretty.js")
 @JsModule(value = "./structure-editor.ts")
 @CssImport(value = "./structure-editor.css")

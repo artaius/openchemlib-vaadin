@@ -36,3 +36,34 @@ mvn vaadin:clean-frontend
 mvn install -Pproduction
 ```
 
+
+## Working Notes
+
+- Query features dialog is missing (fragment mode on, double-click on atom with lasso tool)
+
+### OCL hacks
+- Comment line 42 (```shadowRoot.adoptedStyleSheets = [getEditorStylesheet()];```) in ```node_modules/openchemlib/lib/canvas_editor/create_editor.js```. 
+- Replace line 111 by
+  ```
+    #handleChange = (editorEventOnChange) => {
+        if (editorEventOnChange.type == 'molecule') {
+            console.warn('editor-changed');
+
+            switch (this.mode) {
+                case CanvasEditorElement.MODE.MOLECULE: {
+                    this.idcode = this.getMolecule().getIDCode();
+                    break;
+                }
+                case CanvasEditorElement.MODE.REACTION: {
+                    this.idcode = ReactionEncoder.encode(this.getReaction());
+                    break;
+                }
+                default:
+                    throw new Error(`Mode ${this.mode} is not supported`);
+            }
+            this.dispatchEvent(new CustomEvent('idcode-changed', {detail: "idcode",}));
+        }
+    };
+  ```
+  in ```node_modules/openchemlib/lib/canvas_editor/init/canvas_editor_element.js```
+

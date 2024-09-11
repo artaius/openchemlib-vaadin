@@ -36,7 +36,7 @@
     </distributionManagement>
 
     <properties>
-        <vaadin.version>24.3.1</vaadin.version>
+        <vaadin.version>24.4.7</vaadin.version>
 
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
