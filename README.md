@@ -64,6 +64,29 @@ mvn install -Pproduction
             this.dispatchEvent(new CustomEvent('idcode-changed', {detail: "idcode",}));
         }
     };
+    _copy(){
+      console.warn('copy');
+      navigator.clipboard.writeText(this.idcode).then(r => console.warn('idcode copied'));
+      // TODO handle other content types? see below.
+    }
+    _paste(){
+      // TODO handle other content types?
+      // for debugging: list available clipboard content
+      navigator.clipboard.read().then(clipboardItems => {
+          console.warn(clipboardItems.length + " clipboardItem");
+          clipboardItems.forEach(item => {
+              item.types.forEach(type => {
+                  item.getType(type).then(value => value.text().then(text => console.warn("clipboardItem type: " + type + ": " + text)));
+              })
+          })
+      });
+      navigator.clipboard.readText().then(idcode => {
+          // this.idcode = idcode;
+          this.setAttribute('idcode', idcode);
+          console.warn('idcode pasted');
+      });
+    }
+
   ```
   in ```node_modules/openchemlib/lib/canvas_editor/init/canvas_editor_element.js```
 
