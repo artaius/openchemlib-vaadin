@@ -38,8 +38,17 @@ mvn install -Pproduction
 
 
 ## Working Notes
+### Zakodium
+- Query features dialog is missing (fragment mode on, double-click on atom with lasso tool).
+- Synchronize attributes to properties.
+- Change events (from users) must be reflected in idcode property.
 
-- Query features dialog is missing (fragment mode on, double-click on atom with lasso tool)
+### Idorsia
+- Enhance clipboard handling (evtl. also dd_native)
+- Coordinates are not yet handled.
+- Consolidate API (incl. constructors) of OpenChemLibEditor.java and StructureEditor.
+- StructureEditorDialog needs to be adapted.
+- Still use StructureView or create new Component using SVGRenderer?
 
 ### OCL hacks
 Following changes are directly applied to the node module sources in ```node_modules/openchemlib/lib/canvas_editor```!
