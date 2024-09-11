@@ -42,7 +42,10 @@ mvn install -Pproduction
 - Query features dialog is missing (fragment mode on, double-click on atom with lasso tool)
 
 ### OCL hacks
-- Comment line 42 (```shadowRoot.adoptedStyleSheets = [getEditorStylesheet()];```) in ```node_modules/openchemlib/lib/canvas_editor/create_editor.js```. 
+Following changes are directly applied to the node module sources in ```node_modules/openchemlib/lib/canvas_editor```!
+To make those changes active in dev mode, delete ```src/main/bundles/dev.bundle``` initiate ```mvn clean``` & rerun the project.
+**This also needs to be done in dependant projects!!!**
+
 - Replace line 111 by
   ```
     #handleChange = (editorEventOnChange) => {
@@ -86,7 +89,9 @@ mvn install -Pproduction
           console.warn('idcode pasted');
       });
     }
-
   ```
   in ```node_modules/openchemlib/lib/canvas_editor/init/canvas_editor_element.js```
+
+- **Belows code does not seem to be necessary anymore**  
+  Comment line 42 (```shadowRoot.adoptedStyleSheets = [getEditorStylesheet()];```) in ```node_modules/openchemlib/lib/canvas_editor/create_editor.js```. 
 
