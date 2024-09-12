@@ -1,5 +1,6 @@
 import {html, LitElement, PropertyValues, TemplateResult} from 'lit';
 import {property, customElement} from 'lit/decorators.js';
+import OCL from 'openchemlib/full.pretty.js';
 
 @customElement('structure-view')
 export class StructureView extends LitElement {

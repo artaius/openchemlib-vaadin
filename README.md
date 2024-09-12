@@ -76,12 +76,12 @@ To make those changes active in dev mode, delete ```src/main/bundles/dev.bundle`
             this.dispatchEvent(new CustomEvent('idcode-changed', {detail: "idcode",}));
         }
     };
-    _copy(){
+    #copy(){
       console.warn('copy');
       navigator.clipboard.writeText(this.idcode).then(r => console.warn('idcode copied'));
       // TODO handle other content types? see below.
     }
-    _paste(){
+    #paste(){
       // TODO handle other content types?
       // for debugging: list available clipboard content
       navigator.clipboard.read().then(clipboardItems => {

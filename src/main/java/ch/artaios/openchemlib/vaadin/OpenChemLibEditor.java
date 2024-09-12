@@ -52,11 +52,11 @@ public class OpenChemLibEditor extends AbstractSinglePropertyField<OpenChemLibEd
         contextMenu = new ContextMenu(this);
         contextMenu.addItem("Copy", event -> {
             System.out.println("Copy...");
-            getElement().callJsFunction("_copy");
+            getElement().callJsFunction("#copy");
         });
         final MenuItem paste = contextMenu.addItem("Paste", event -> {
             System.out.println("Paste...");
-            getElement().callJsFunction("_paste");
+            getElement().callJsFunction("#paste");
         });
         paste.setEnabled(!readonly);
     }
