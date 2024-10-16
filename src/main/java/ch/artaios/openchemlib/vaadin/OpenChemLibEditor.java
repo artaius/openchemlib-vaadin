@@ -44,6 +44,13 @@ public class OpenChemLibEditor extends AbstractSinglePropertyField<OpenChemLibEd
     public OpenChemLibEditor(boolean readonly) {
         super("idcode", "", true);
 
+        // set custom js event name
+        setSynchronizedEvent("change");
+
+        // init Vaadin specific JS
+        getElement().executeJs("this.init();");
+
+
 //        getElement().callJsFunction("setChangeListenerCallback(dispatchEvent(new CustomEvent('idcode-changed', {})));");
 //        UI.getCurrent().getPage().executeJs("OCL.registerCustomElement();");
 
@@ -52,13 +59,58 @@ public class OpenChemLibEditor extends AbstractSinglePropertyField<OpenChemLibEd
         contextMenu = new ContextMenu(this);
         contextMenu.addItem("Copy", event -> {
             System.out.println("Copy...");
-            getElement().callJsFunction("#copy");
+//            getElement().callJsFunction("copy");
+            getElement().executeJs("""
+                    console.warn('copy');
+                    navigator.clipboard.writeText(this.idcode).then(r => console.warn('idcode copied'));
+                    """);
         });
         final MenuItem paste = contextMenu.addItem("Paste", event -> {
             System.out.println("Paste...");
-            getElement().callJsFunction("#paste");
+            getElement().callJsFunction("paste");
+//            getElement().executeJs("""
+//                    // TODO handle other content types?
+//                    // for debugging: list available clipboard content
+//                    navigator.clipboard.read().then(clipboardItems => {
+//                        console.warn(clipboardItems.length + " clipboardItem");
+//                        clipboardItems.forEach(item => {
+//                            item.types.forEach(type => {
+//                                item.getType(type).then(value => value.text().then(text => console.warn("clipboardItem type: " + type + ": " + text)));
+//                            })
+//                        })
+//                    });
+//                    navigator.clipboard.readText().then(idcode => {
+//                        // this.idcode = idcode;
+//                        this.setAttribute('idcode', idcode);
+//                        console.warn('idcode pasted');
+//                    });
+//                    """);
         });
         paste.setEnabled(!readonly);
+
+        final MenuItem clipboardContents = contextMenu.addItem("Get Clipboard Contents", event -> {
+            System.out.println("GetClipboardContents...");
+            getElement().executeJs("return navigator.clipboard.readText();").then(String.class, clipboardContent -> {
+                System.out.println("ClipboardContent is: " + clipboardContent);
+            });
+        });
+//        final MenuItem test = contextMenu.addItem("Test", event -> {
+//            System.out.println("Test...");
+//            getElement().executeJs("""
+//                    reactionEncoder = OCL.ReactionEncoder;
+//                    console.warn(reactionEncoder);
+//                    idcode1 = "gJX@@eKU@@ gGQHDHaImfh@!defH@DAIfUVjj`@";
+//                    reaction = reactionEncoder.decode(idcode1);
+//                    idcode2 = reactionEncoder.encode(reaction);
+//                    console.warn(idcode1);
+//                    console.warn(idcode2);
+//                    console.warn(reaction);
+//                    """);
+//        });
+        final MenuItem test = contextMenu.addItem("Test", event -> {
+            System.out.println("Test...");
+            getElement().callJsFunction("testt");
+        });
     }
 
     @Override

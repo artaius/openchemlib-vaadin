@@ -56,51 +56,33 @@ To make those changes active in dev mode, delete ```src/main/bundles/dev.bundle`
 **This also needs to be done in dependant projects!!!**
 
 - Replace line 111 by
-  ```
+  ```js
     #handleChange = (editorEventOnChange) => {
-        if (editorEventOnChange.type == 'molecule') {
-            console.warn('editor-changed');
+      const domEvent = new CustomEvent('change', {
+        detail: editorEventOnChange,
+        composed: true,
+      });
+      if (editorEventOnChange.type == 'molecule') {
+          console.warn('editor-changed');
 
-            switch (this.mode) {
-                case CanvasEditorElement.MODE.MOLECULE: {
-                    this.idcode = this.getMolecule().getIDCode();
-                    break;
-                }
-                case CanvasEditorElement.MODE.REACTION: {
-                    this.idcode = ReactionEncoder.encode(this.getReaction());
-                    break;
-                }
-                default:
-                    throw new Error(`Mode ${this.mode} is not supported`);
-            }
-            this.dispatchEvent(new CustomEvent('idcode-changed', {detail: "idcode",}));
-        }
+          switch (this.mode) {
+              case CanvasEditorElement.MODE.MOLECULE: {
+                  this.idcode = this.getMolecule().getIDCode();
+                  break;
+              }
+              case CanvasEditorElement.MODE.REACTION: {
+                  this.idcode = ReactionEncoder.encode(this.getReaction());
+                  break;
+              }
+              default:
+                  throw new Error(`Mode ${this.mode} is not supported`);
+          }
+          this.dispatchEvent(domEvent);
+      }
     };
-    #copy(){
-      console.warn('copy');
-      navigator.clipboard.writeText(this.idcode).then(r => console.warn('idcode copied'));
-      // TODO handle other content types? see below.
-    }
-    #paste(){
-      // TODO handle other content types?
-      // for debugging: list available clipboard content
-      navigator.clipboard.read().then(clipboardItems => {
-          console.warn(clipboardItems.length + " clipboardItem");
-          clipboardItems.forEach(item => {
-              item.types.forEach(type => {
-                  item.getType(type).then(value => value.text().then(text => console.warn("clipboardItem type: " + type + ": " + text)));
-              })
-          })
-      });
-      navigator.clipboard.readText().then(idcode => {
-          // this.idcode = idcode;
-          this.setAttribute('idcode', idcode);
-          console.warn('idcode pasted');
-      });
-    }
   ```
   in ```node_modules/openchemlib/lib/canvas_editor/init/canvas_editor_element.js```
 
-- **Belows code does not seem to be necessary anymore**  
+- **Belows code is only needed as workaround for Bug in Firefox 100.0.2**  
   Comment line 42 (```shadowRoot.adoptedStyleSheets = [getEditorStylesheet()];```) in ```node_modules/openchemlib/lib/canvas_editor/create_editor.js```. 
 
