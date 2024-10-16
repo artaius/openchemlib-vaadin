@@ -15,7 +15,7 @@ import java.util.concurrent.TimeoutException;
 
 @Tag("openchemlib-editor")
 @NpmPackage(value = "openchemlib", version = "8.15.0")
-@JsModule(value = "openchemlib/full.pretty.js")
+@JsModule("openchemlib/full.pretty.js")
 @JsModule("./openchemlib-editor-init.js")
 @CssImport("./openchemlib-editor.css")
 
@@ -109,7 +109,7 @@ public class OpenChemLibEditor extends AbstractSinglePropertyField<OpenChemLibEd
 //        });
         final MenuItem test = contextMenu.addItem("Test", event -> {
             System.out.println("Test...");
-            getElement().callJsFunction("testt");
+            getElement().executeJs("this.getMolecule().;");
         });
     }
 

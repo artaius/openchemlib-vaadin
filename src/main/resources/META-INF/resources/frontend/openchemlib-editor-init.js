@@ -1,5 +1,4 @@
 import OCL from 'openchemlib/full.pretty.js';
-import {el} from "date-fns/locale";
 
 try {
     console.info("Registering OCL custom tag for Vaadin...");
@@ -30,10 +29,12 @@ try {
 
         this.ondrop = function(e) {
             e.preventDefault();
-            if(e.dataTransfer != null)
-                {
-                    var data = e.dataTransfer.getData("text/plain");
-                    this.idcode = molStringToIdCode(data);
+            if(e.dataTransfer != null){
+                const data = e.dataTransfer.getData("text/plain");
+                if(this.mode === "molecule")
+                    this.setAttribute('idcode', anyMolStringToIdCode(data));
+                else
+                    this.setAttribute('idcode', anyRxnStringToIdCode(data));
                 }
         }
     }
@@ -50,27 +51,54 @@ try {
         //     })
         // });
         navigator.clipboard.readText().then(data => {
-            this.setAttribute('idcode', molStringToIdCode(data));
-            console.warn('idcode pasted');
+            if(this.mode === "molecule")
+                this.setAttribute('idcode', anyMolStringToIdCode(data));
+            else
+                this.setAttribute('idcode', anyRxnStringToIdCode(data));
         });
     };
 
-    function molStringToIdCode(string) {
-        const [idcode, coordinates] = this.idcode.split(' ');
+    function anyMolStringToIdCode(string) {
+        const [idcode, coordinates] = string.split(' ');
 
-        let molecule = OCL.Molecule.fromIDCode(idcode, coordinates);
-        if(molecule!==undefined)
-            return string;
-        else
-            molecule = OCL.Molecule.fromSmiles(string)
+        let molecule = undefined;
 
-        if(molecule===undefined)
-            molecule = OCL.Molecule.fromMolfile(string)
-
+        // check if the string contains line breaks -> a molfile
+        if(string.match(/[\r\n]+/)) {
+            // try molfile
+            try{
+                molecule = OCL.Molecule.fromMolfile(string)
+            } catch (error) {
+                console.warn(error);
+            }
+        } else {
+            // try smiles
+            try {
+                molecule = OCL.Molecule.fromSmiles(string)
+            } catch (error) {
+                // try idcode
+                try {
+                    molecule = OCL.Molecule.fromIDCode(idcode, coordinates);
+                    // directly return the input string if it is already an IDCode
+                    return string;
+                } catch (error) {
+                    console.warn(error);
+                }
+            }
+        }
         if (molecule!== undefined)
-            return molecule.getIDCode + " " + molecule.getIDCoordinates();
+            return molecule.getIDCode() + " " + molecule.getIDCoordinates();
         else
-            return (new OCL.Molecule()).getIDCode
+            return (new OCL.Molecule()).getIDCode();
+    }
+
+    function anyRxnStringToIdCode(string) {
+        try {
+            const reaction = OCL.ReactionEncoder.decode(string);
+            return string;
+        } catch (error) {
+            console.error(error);
+        }
     }
 
     console.info("Configured OCL custom tag for Vaadin...");

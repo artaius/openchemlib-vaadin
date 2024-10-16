@@ -40,6 +40,8 @@ public class TestView  extends VerticalLayout {
 
         add(new Button("Get Mode By JS", e -> System.out.println(openChemLibEditor.test())));
 
+        add(new TextField());
+
         final OpenChemLibEditor openChemLibEditor2 = new OpenChemLibEditor();
         openChemLibEditor2.setReadonly(false);
         openChemLibEditor2.setMode(OpenChemLibEditor.Mode.REACTION);
