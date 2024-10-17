@@ -8,12 +8,6 @@ try {
     // const constr = CanvasEditorElement.prototype.constructor;
 
     CanvasEditorElement.prototype.init = function() {
-        console.warn('constructor');
-        console.info(arguments);
-
-        // constr.apply(this, arguments);
-
-        console.info('constructor');
         this.draggable = true;
         this.ondragstart = function(e) {
             if(e.dataTransfer != null) {
@@ -43,10 +37,10 @@ try {
         // TODO handle other content types?
         // for debugging: list available clipboard content
         // navigator.clipboard.read().then(clipboardItems => {
-        //     console.warn(clipboardItems.length + " clipboardItem");
+        //     console.info(clipboardItems.length + " clipboardItem");
         //     clipboardItems.forEach(item => {
         //         item.types.forEach(type => {
-        //             item.getType(type).then(value => value.text().then(text => console.warn("clipboardItem type: " + type + ": " + text)));
+        //             item.getType(type).then(value => value.text().then(text => console.info("clipboardItem type: " + type + ": " + text)));
         //         })
         //     })
         // });

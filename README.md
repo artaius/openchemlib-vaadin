@@ -63,7 +63,7 @@ To make those changes active in dev mode, delete ```src/main/bundles/dev.bundle`
         composed: true,
       });
       if (editorEventOnChange.type == 'molecule') {
-          console.warn('editor-changed');
+          console.info('editor-changed');
 
           switch (this.mode) {
               case CanvasEditorElement.MODE.MOLECULE: {

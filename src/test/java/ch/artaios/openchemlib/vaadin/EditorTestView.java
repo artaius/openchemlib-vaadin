@@ -3,21 +3,21 @@ package ch.artaios.openchemlib.vaadin;
 import com.vaadin.flow.component.Unit;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.checkbox.Checkbox;
-import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.html.Hr;
-import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.select.Select;
 import com.vaadin.flow.component.textfield.TextField;
-import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.Route;
+import com.vaadin.flow.router.RouteAlias;
 
-@Route("")
-public class TestView  extends VerticalLayout {
+
+@Route("editortestview")
+@RouteAlias("")
+public class EditorTestView extends VerticalLayout {
 
     private StructureEditor sv2;
 
-    public TestView() {
+    public EditorTestView() {
         final TextField idcode = new TextField();
         idcode.setWidthFull();
 
