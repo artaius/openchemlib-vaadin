@@ -31,7 +31,7 @@ try {
             e.preventDefault();
             if(e.dataTransfer != null){
                 const data = e.dataTransfer.getData("text/plain");
-                if(this.mode === "molecule")
+                if(this.mode ===  CanvasEditorElement.MODE.MOLECULE)
                     this.setAttribute('idcode', anyMolStringToIdCode(data));
                 else
                     this.setAttribute('idcode', anyRxnStringToIdCode(data));
@@ -51,7 +51,7 @@ try {
         //     })
         // });
         navigator.clipboard.readText().then(data => {
-            if(this.mode === "molecule")
+            if(this.mode ===  CanvasEditorElement.MODE.MOLECULE)
                 this.setAttribute('idcode', anyMolStringToIdCode(data));
             else
                 this.setAttribute('idcode', anyRxnStringToIdCode(data));
