@@ -38,8 +38,6 @@ public class EditorTestView extends VerticalLayout {
         setIdCode.setWidthFull();
         add(setIdCode);
 
-        add(new Button("Get Mode By JS", e -> System.out.println(openChemLibEditor.test())));
-
         add(new TextField());
 
         final OpenChemLibEditor openChemLibEditor2 = new OpenChemLibEditor();
