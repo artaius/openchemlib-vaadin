@@ -119,21 +119,6 @@ public class OpenChemLibEditor extends AbstractSinglePropertyField<OpenChemLibEd
 //        super.setValue(idcode);
     }
 
-    public String test() {
-        final String[] mode = {""};
-        try {
-//            getElement().executeJs("return this.mode").then(String.class, System.out::println, System.err::println); // to get property
-//            getElement().executeJs("return $0.mode").then(String.class, System.out::println, System.err::println); // to get property
-//            getElement().callJsFunction("getAttribute", "mode").then(String.class, System.out::println, System.err::println); // getting property not possible because .mode is not a method
-
-            getElement().executeJs("$0.setOnChangeListener(function(what, isUserEvent){console.info(what);})");
-
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-        return mode[0];
-    }
-
     public void setSmiles(String smiles) {
         getElement().callJsFunction("_setSmiles", smiles);
     }

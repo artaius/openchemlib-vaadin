@@ -45,3 +45,6 @@ mvnw
 tsconfig.json
 types.d.ts
 index.html
+
+# Others
+/.flattened-pom.xml
