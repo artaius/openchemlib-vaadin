@@ -66,12 +66,15 @@
             <artifactId>vaadin-core</artifactId>
             <scope>provided</scope>
         </dependency>
-        
-        <!-- Spring Boot & vaadin starter coming in to test scope via parent -->
 
-        <!-- These here are all optional, but probably handy for testing -->        
+        <dependency>
+            <groupId>com.actelion.research</groupId>
+            <artifactId>openchemlib</artifactId>
+            <version>2024.10.1</version>
+            <scope>provided</scope>
+        </dependency>
 
-                
+        <!-- These here are all optional, but probably handy for testing -->
         <dependency>
             <groupId>in.virit</groupId>
             <artifactId>mopo</artifactId>

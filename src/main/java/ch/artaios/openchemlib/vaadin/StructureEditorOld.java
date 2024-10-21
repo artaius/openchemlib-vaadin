@@ -5,8 +5,9 @@ import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.dependency.JsModule;
 import com.vaadin.flow.component.dependency.NpmPackage;
 
+@Deprecated(since = "Please use the most recent StructureEditor or ReactionEditor")
 @Tag("structure-editor")
-@NpmPackage(value = "openchemlib", version = "8.15.0")
+@NpmPackage(value = "openchemlib", version = "8.16.0")
 @JsModule(value = "openchemlib/full.pretty.js")
 @JsModule(value = "./structure-editor.ts")
 @CssImport(value = "./structure-editor.css")
@@ -15,7 +16,7 @@ import com.vaadin.flow.component.dependency.NpmPackage;
  files to './src/main/resources/META-INF/resources/frontend' and insert an
  annotation @JsModule("./my-module.js") here.
 */
-public class StructureEditor extends AbstractSinglePropertyField<StructureEditor, String> implements HasSize {
+public class StructureEditorOld extends AbstractSinglePropertyField<StructureEditorOld, String> implements HasSize {
     public static final String ATTRIBUTE_FRAGMENT = "fragment";
     public static final String ATTRIBUTE_SHOWIDCODE = "showidcode";
 
@@ -25,15 +26,15 @@ public class StructureEditor extends AbstractSinglePropertyField<StructureEditor
     protected static final PropertyDescriptor<Boolean, Boolean> showIdCodeProperty = PropertyDescriptors.propertyWithDefault(ATTRIBUTE_SHOWIDCODE, false);
 
 
-    public StructureEditor() {
+    public StructureEditorOld() {
         this(true, false);
     }
 
-    public StructureEditor(boolean fragment) {
+    public StructureEditorOld(boolean fragment) {
         this(fragment, false);
     }
 
-    public StructureEditor(boolean fragment, boolean showIdCode) {
+    public StructureEditorOld(boolean fragment, boolean showIdCode) {
         super("idcode", "", true);
         setFragment(fragment);
         setShowIdCode(showIdCode);

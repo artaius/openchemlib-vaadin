@@ -14,7 +14,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
 @Tag("openchemlib-editor")
-@NpmPackage(value = "openchemlib", version = "8.15.0")
+@NpmPackage(value = "openchemlib", version = "8.16.0")
 @JsModule("openchemlib/full.pretty.js")
 @JsModule("./openchemlib-editor-init.js")
 @CssImport("./openchemlib-editor.css")
@@ -59,32 +59,11 @@ public class OpenChemLibEditor extends AbstractSinglePropertyField<OpenChemLibEd
         contextMenu = new ContextMenu(this);
         contextMenu.addItem("Copy", event -> {
             System.out.println("Copy...");
-//            getElement().callJsFunction("copy");
-            getElement().executeJs("""
-                    console.info('copy');
-                    navigator.clipboard.writeText(this.idcode).then(r => console.info('idcode copied'));
-                    """);
+            getElement().callJsFunction("copy");
         });
         final MenuItem paste = contextMenu.addItem("Paste", event -> {
             System.out.println("Paste...");
             getElement().callJsFunction("paste");
-//            getElement().executeJs("""
-//                    // TODO handle other content types?
-//                    // for debugging: list available clipboard content
-//                    navigator.clipboard.read().then(clipboardItems => {
-//                        console.info(clipboardItems.length + " clipboardItem");
-//                        clipboardItems.forEach(item => {
-//                            item.types.forEach(type => {
-//                                item.getType(type).then(value => value.text().then(text => console.info("clipboardItem type: " + type + ": " + text)));
-//                            })
-//                        })
-//                    });
-//                    navigator.clipboard.readText().then(idcode => {
-//                        // this.idcode = idcode;
-//                        this.setAttribute('idcode', idcode);
-//                        console.info('idcode pasted');
-//                    });
-//                    """);
         });
         paste.setEnabled(!readonly);
 
@@ -109,7 +88,7 @@ public class OpenChemLibEditor extends AbstractSinglePropertyField<OpenChemLibEd
 //        });
         final MenuItem test = contextMenu.addItem("Test", event -> {
             System.out.println("Test...");
-            getElement().executeJs("this.getMolecule().;");
+            getElement().executeJs("this.test();");
         });
     }
 

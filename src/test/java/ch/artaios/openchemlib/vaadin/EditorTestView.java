@@ -1,7 +1,6 @@
 package ch.artaios.openchemlib.vaadin;
 
 import com.vaadin.flow.component.Unit;
-import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.checkbox.Checkbox;
 import com.vaadin.flow.component.html.Hr;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -15,7 +14,7 @@ import com.vaadin.flow.router.RouteAlias;
 @RouteAlias("")
 public class EditorTestView extends VerticalLayout {
 
-    private StructureEditor sv2;
+    private StructureEditorOld sv2;
 
     public EditorTestView() {
         final TextField idcode = new TextField();
@@ -65,11 +64,11 @@ public class EditorTestView extends VerticalLayout {
 
         add(new Hr());
 
-        final StructureEditor legacyStructureEditor = new StructureEditor(true);
-        legacyStructureEditor.setValue("difH@BAIVUxZ`@@@");
-        legacyStructureEditor.setFragment(true);
-        legacyStructureEditor.addValueChangeListener(event -> System.out.println("legacyStructureEditor change event: " + legacyStructureEditor.getValue()));
-        add(legacyStructureEditor);
+        final StructureEditorOld legacyStructureEditorOld = new StructureEditorOld(true);
+        legacyStructureEditorOld.setValue("difH@BAIVUxZ`@@@");
+        legacyStructureEditorOld.setFragment(true);
+        legacyStructureEditorOld.addValueChangeListener(event -> System.out.println("legacyStructureEditor change event: " + legacyStructureEditorOld.getValue()));
+        add(legacyStructureEditorOld);
 
 //
 //        final Button button2 = new Button("Change First");

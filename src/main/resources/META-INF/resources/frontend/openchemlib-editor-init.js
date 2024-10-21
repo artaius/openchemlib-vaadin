@@ -33,6 +33,10 @@ try {
         }
     }
 
+    CanvasEditorElement.prototype.copy=function() {
+        navigator.clipboard.writeText(this.idcode); //.then(r => console.info('idcode copied'));
+    }
+
     CanvasEditorElement.prototype.paste=function() {
         // TODO handle other content types?
         // for debugging: list available clipboard content

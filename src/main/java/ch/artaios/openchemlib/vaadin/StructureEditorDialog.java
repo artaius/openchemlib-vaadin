@@ -15,7 +15,7 @@ public class StructureEditorDialog extends VerticalLayout {
 
     protected final StructureView structureView;
     protected final Dialog dialog;
-    private final StructureEditor structureEditor;
+    private final StructureEditorOld structureEditorOld;
 
     public StructureEditorDialog(String idCode) {
         this();
@@ -24,21 +24,21 @@ public class StructureEditorDialog extends VerticalLayout {
 
     public StructureEditorDialog(boolean fragment) {
         this();
-        structureEditor.setFragment(fragment);
+        structureEditorOld.setFragment(fragment);
     }
 
     public StructureEditorDialog() {
         this.setPadding(false);
         dialog = new Dialog("Structure Editor");
         structureView = new StructureView(true);
-        structureEditor = new StructureEditor();
+        structureEditorOld = new StructureEditorOld();
 
         dialog.setDraggable(true);
         dialog.setResizable(true);
-        dialog.add(structureEditor);
+        dialog.add(structureEditorOld);
 
         Button okButton = new Button("Ok", e -> {
-            structureView.setValue(structureEditor.getValue());
+            structureView.setValue(structureEditorOld.getValue());
             dialog.close();
         });
         Button cancelButton = new Button("Cancel", e -> {
@@ -49,7 +49,7 @@ public class StructureEditorDialog extends VerticalLayout {
 
         structureView.addDblClickListener(event -> {
             final String idCode = structureView.getValue();
-            structureEditor.setValue(idCode);
+            structureEditorOld.setValue(idCode);
             dialog.open();
         });
 

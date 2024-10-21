@@ -8,7 +8,7 @@ import com.vaadin.flow.component.dependency.NpmPackage;
 import com.vaadin.flow.shared.Registration;
 
 @Tag("structure-view")
-@NpmPackage(value = "openchemlib", version = "8.15.0")
+@NpmPackage(value = "openchemlib", version = "8.16.0")
 @JsModule(value = "openchemlib/full.pretty.js")
 @JsModule(value = "./structure-view.ts")
 @CssImport(value = "./structure-view.css")
