@@ -33,7 +33,7 @@ public class OpenChemLibEditor extends AbstractSinglePropertyField<OpenChemLibEd
 
     // See comment in StructureEditor
     // For some reason PropertyDescriptor works better here (here values are only set from server)
-//    private static final PropertyDescriptor<Boolean, Boolean> readonlyProperty = PropertyDescriptors.propertyWithDefault(ATTRIBUTE_READONLY, false);
+    private static final PropertyDescriptor<Boolean, Boolean> readonlyProperty = PropertyDescriptors.propertyWithDefault(ATTRIBUTE_READONLY, false);
 //    private static final PropertyDescriptor<String, String> modeProperty = PropertyDescriptors.propertyWithDefault(ATTRIBUTE_MODE, Mode.MOLECULE.name().toLowerCase());
 //    private static final PropertyDescriptor<Boolean, Boolean> fragmentProperty = PropertyDescriptors.propertyWithDefault(ATTRIBUTE_FRAGMENT, false);
 
@@ -42,7 +42,7 @@ public class OpenChemLibEditor extends AbstractSinglePropertyField<OpenChemLibEd
     }
 
     public OpenChemLibEditor(boolean readonly) {
-        super("idcode", "", true);
+        super("idcode", "d@", true);
 
         // set custom js event name
         setSynchronizedEvent("change");
@@ -92,24 +92,20 @@ public class OpenChemLibEditor extends AbstractSinglePropertyField<OpenChemLibEd
         });
     }
 
-    @Override
-    public void setValue(String idcode) {
-        getElement().setAttribute(ATTRIBUTE_IDCODE, idcode);
-//        super.setValue(idcode);
-    }
-
-    public void setSmiles(String smiles) {
-        getElement().callJsFunction("_setSmiles", smiles);
-    }
+//    @Override
+//    public void setValue(String idcode) {
+//        getElement().setAttribute(ATTRIBUTE_IDCODE, idcode);
+////        super.setValue(idcode);
+//    }
 
     public boolean getReadonly() {
-//        final String readonly = readonlyProperty.get(this);
-        final String readonly = getElement().getProperty(ATTRIBUTE_READONLY);
-        return readonly!=null && !readonly.equalsIgnoreCase("true");
+        return readonlyProperty.get(this);
+//        final String readonly = getElement().getProperty(ATTRIBUTE_READONLY);
+//        return readonly!=null && !readonly.equalsIgnoreCase("true");
     }
     public void setReadonly(boolean readonly) {
-//        readonlyProperty.set(this, readonly);
-        getElement().setAttribute(ATTRIBUTE_READONLY, readonly);
+        readonlyProperty.set(this, readonly);
+//        getElement().setAttribute(ATTRIBUTE_READONLY, readonly);
         if(contextMenu!=null)
             contextMenu.getItems().get(1).setEnabled(!readonly);
     }

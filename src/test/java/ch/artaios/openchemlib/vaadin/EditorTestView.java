@@ -39,36 +39,36 @@ public class EditorTestView extends VerticalLayout {
 
         add(new TextField());
 
-        final OpenChemLibEditor openChemLibEditor2 = new OpenChemLibEditor();
-        openChemLibEditor2.setReadonly(false);
-        openChemLibEditor2.setMode(OpenChemLibEditor.Mode.REACTION);
-        openChemLibEditor2.setValue("gJX@@eKU@@ gGQHDHaImfh@!defH@DAIfUVjj`@");
-        openChemLibEditor2.addValueChangeListener(event -> System.out.println("OpenChemLibEditor2 change event: " + openChemLibEditor2.getValue()));
-        add(openChemLibEditor2);
-
-        add(new Checkbox("Mode Reaction", event -> {
-            final OpenChemLibEditor.Mode mode = event.getValue() ? OpenChemLibEditor.Mode.REACTION : OpenChemLibEditor.Mode.MOLECULE;
-            openChemLibEditor.setMode(mode);
-            openChemLibEditor2.setMode(mode);
-        }));
-
-        add(new Checkbox("Readonly", event -> {
-            openChemLibEditor.setReadonly(event.getValue());
-            openChemLibEditor2.setReadonly(event.getValue());
-        }));
-
-        add(new Checkbox("Fragment", event -> {
-            openChemLibEditor.setFragment(event.getValue());
-            openChemLibEditor2.setFragment(event.getValue());
-        }));
-
-        add(new Hr());
-
-        final StructureEditorOld legacyStructureEditorOld = new StructureEditorOld(true);
-        legacyStructureEditorOld.setValue("difH@BAIVUxZ`@@@");
-        legacyStructureEditorOld.setFragment(true);
-        legacyStructureEditorOld.addValueChangeListener(event -> System.out.println("legacyStructureEditor change event: " + legacyStructureEditorOld.getValue()));
-        add(legacyStructureEditorOld);
+//        final OpenChemLibEditor openChemLibEditor2 = new OpenChemLibEditor();
+//        openChemLibEditor2.setReadonly(false);
+//        openChemLibEditor2.setMode(OpenChemLibEditor.Mode.REACTION);
+//        openChemLibEditor2.setValue("gJX@@eKU@@ gGQHDHaImfh@!defH@DAIfUVjj`@");
+//        openChemLibEditor2.addValueChangeListener(event -> System.out.println("OpenChemLibEditor2 change event: " + openChemLibEditor2.getValue()));
+//        add(openChemLibEditor2);
+//
+//        add(new Checkbox("Mode Reaction", event -> {
+//            final OpenChemLibEditor.Mode mode = event.getValue() ? OpenChemLibEditor.Mode.REACTION : OpenChemLibEditor.Mode.MOLECULE;
+//            openChemLibEditor.setMode(mode);
+//            openChemLibEditor2.setMode(mode);
+//        }));
+//
+//        add(new Checkbox("Readonly", event -> {
+//            openChemLibEditor.setReadonly(event.getValue());
+//            openChemLibEditor2.setReadonly(event.getValue());
+//        }));
+//
+//        add(new Checkbox("Fragment", event -> {
+//            openChemLibEditor.setFragment(event.getValue());
+//            openChemLibEditor2.setFragment(event.getValue());
+//        }));
+//
+//        add(new Hr());
+//
+//        final StructureEditorOld legacyStructureEditorOld = new StructureEditorOld(true);
+//        legacyStructureEditorOld.setValue("difH@BAIVUxZ`@@@");
+//        legacyStructureEditorOld.setFragment(true);
+//        legacyStructureEditorOld.addValueChangeListener(event -> System.out.println("legacyStructureEditor change event: " + legacyStructureEditorOld.getValue()));
+//        add(legacyStructureEditorOld);
 
 //
 //        final Button button2 = new Button("Change First");
