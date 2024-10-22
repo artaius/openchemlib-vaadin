@@ -8,7 +8,6 @@ try {
     // const constr = CanvasEditorElement.prototype.constructor;
 
     CanvasEditorElement.prototype.init = function() {
-        this.draggable = true;
         this.ondragstart = function(e) {
             if(e.dataTransfer != null) {
                 e.dataTransfer.setData("text/plain", this.idcode);
@@ -17,7 +16,7 @@ try {
             }
         }
         this.ondragover = function(e) {
-            if(!this.readonly)
+            if(this.editable)
                 e.preventDefault();
         }
 

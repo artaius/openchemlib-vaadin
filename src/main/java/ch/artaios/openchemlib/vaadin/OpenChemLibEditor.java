@@ -6,12 +6,6 @@ import com.vaadin.flow.component.contextmenu.MenuItem;
 import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.dependency.JsModule;
 import com.vaadin.flow.component.dependency.NpmPackage;
-import com.vaadin.flow.theme.lumo.LumoUtility;
-
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 
 @Tag("openchemlib-editor")
 @NpmPackage(value = "openchemlib", version = "8.16.0")
@@ -27,21 +21,29 @@ public class OpenChemLibEditor extends AbstractSinglePropertyField<OpenChemLibEd
 
     public static final String ATTRIBUTE_IDCODE = "idcode";
     public static final String ATTRIBUTE_READONLY = "readonly";
+    public static final String ATTRIBUTE_EDITABLE = "editable";
     public static final String ATTRIBUTE_MODE = "mode";
     public static final String ATTRIBUTE_FRAGMENT = "fragment";
-    private ContextMenu contextMenu;
 
-    // See comment in StructureEditor
-    // For some reason PropertyDescriptor works better here (here values are only set from server)
-//    private static final PropertyDescriptor<Boolean, Boolean> readonlyProperty = PropertyDescriptors.propertyWithDefault(ATTRIBUTE_READONLY, false);
-//    private static final PropertyDescriptor<String, String> modeProperty = PropertyDescriptors.propertyWithDefault(ATTRIBUTE_MODE, Mode.MOLECULE.name().toLowerCase());
-//    private static final PropertyDescriptor<Boolean, Boolean> fragmentProperty = PropertyDescriptors.propertyWithDefault(ATTRIBUTE_FRAGMENT, false);
+    private static final PropertyDescriptor<Boolean, Boolean> readonlyProperty = PropertyDescriptors.propertyWithDefault(ATTRIBUTE_READONLY, false);
+    private static final PropertyDescriptor<Boolean, Boolean> editableProperty = PropertyDescriptors.propertyWithDefault(ATTRIBUTE_EDITABLE, false);
+    private static final PropertyDescriptor<String, String> modeProperty = PropertyDescriptors.propertyWithDefault(ATTRIBUTE_MODE, Mode.MOLECULE.name().toLowerCase());
+    private static final PropertyDescriptor<Boolean, Boolean> fragmentProperty = PropertyDescriptors.propertyWithDefault(ATTRIBUTE_FRAGMENT, false);
+
+    protected final ContextMenu contextMenu;
 
     public OpenChemLibEditor() {
-        this(true);
+        this(Mode.MOLECULE, false, false, true);
     }
 
-    public OpenChemLibEditor(boolean readonly) {
+    /**
+     * Creates a new OpenChemLibEditor.
+     * @param mode the editor mode (MOLECULE/REACTION)
+     * @param fragment if true, fragment mode is enabled
+     * @param readonly if true, the editor doesn't allow drawing (corresponds to OCL-JS readonly property/attribute)
+     * @param editable if true, the editor is editable (e.g. by setting the idcode by pasting/dropping)
+     */
+    public OpenChemLibEditor(Mode mode, boolean fragment, boolean readonly, boolean editable) {
         super("idcode", "", true);
 
         // set custom js event name
@@ -50,12 +52,7 @@ public class OpenChemLibEditor extends AbstractSinglePropertyField<OpenChemLibEd
         // init Vaadin specific JS
         getElement().executeJs("this.init();");
 
-
-//        getElement().callJsFunction("setChangeListenerCallback(dispatchEvent(new CustomEvent('idcode-changed', {})));");
-//        UI.getCurrent().getPage().executeJs("OCL.registerCustomElement();");
-
-        setReadonly(readonly);
-
+        // create context menu
         contextMenu = new ContextMenu(this);
         contextMenu.addItem("Copy", event -> {
             System.out.println("Copy...");
@@ -65,58 +62,53 @@ public class OpenChemLibEditor extends AbstractSinglePropertyField<OpenChemLibEd
             System.out.println("Paste...");
             getElement().callJsFunction("paste");
         });
-        paste.setEnabled(!readonly);
+        paste.setEnabled(editable);
 
-        final MenuItem clipboardContents = contextMenu.addItem("Get Clipboard Contents", event -> {
-            System.out.println("GetClipboardContents...");
-            getElement().executeJs("return navigator.clipboard.readText();").then(String.class, clipboardContent -> {
-                System.out.println("ClipboardContent is: " + clipboardContent);
-            });
-        });
-//        final MenuItem test = contextMenu.addItem("Test", event -> {
-//            System.out.println("Test...");
-//            getElement().executeJs("""
-//                    reactionEncoder = OCL.ReactionEncoder;
-//                    console.info(reactionEncoder);
-//                    idcode1 = "gJX@@eKU@@ gGQHDHaImfh@!defH@DAIfUVjj`@";
-//                    reaction = reactionEncoder.decode(idcode1);
-//                    idcode2 = reactionEncoder.encode(reaction);
-//                    console.info(idcode1);
-//                    console.info(idcode2);
-//                    console.info(reaction);
-//                    """);
-//        });
-        final MenuItem test = contextMenu.addItem("Test", event -> {
-            System.out.println("Test...");
-            getElement().executeJs("this.test();");
-        });
+        // set initial values
+        setMode(mode);
+        setFragment(fragment);
+        setReadonly(readonly);
+        setEditable(editable);
     }
 
+    /* Due to a bug in OCL-JS where "CanvasEditorElement.#state"
+     * is not initialized early enough (it is initialized on connectedCallback)
+     * properties are set by attribute instead of property.
+     *
+     * TODO recheck in a later version of OCL-JS if problem still persists
+     */
+
+
+    /* Overriding property setter to enforce writing by attribute (see above) */
     @Override
     public void setValue(String idcode) {
         getElement().setAttribute(ATTRIBUTE_IDCODE, idcode);
-//        super.setValue(idcode);
-    }
-
-    public void setSmiles(String smiles) {
-        getElement().callJsFunction("_setSmiles", smiles);
     }
 
     public boolean getReadonly() {
-//        final String readonly = readonlyProperty.get(this);
-        final String readonly = getElement().getProperty(ATTRIBUTE_READONLY);
-        return readonly!=null && !readonly.equalsIgnoreCase("true");
+        return readonlyProperty.get(this);
     }
     public void setReadonly(boolean readonly) {
-//        readonlyProperty.set(this, readonly);
+        // readonlyProperty.set(this, readonly);
         getElement().setAttribute(ATTRIBUTE_READONLY, readonly);
+
+        // set draggable only if in readonly (non-drawing mode)
+        getElement().setProperty("draggable", readonly);
+    }
+
+    public boolean getEditable() {
+        return editableProperty.get(this);
+    }
+    public void setEditable(boolean editable) {
+        editableProperty.set(this, editable);
+
+        // enable paste context menu only if editable
         if(contextMenu!=null)
-            contextMenu.getItems().get(1).setEnabled(!readonly);
+            contextMenu.getItems().get(1).setEnabled(editable);
     }
 
     public Mode getMode() {
-//        final String modeString = modeProperty.get(this);
-        final String modeString = getElement().getProperty(ATTRIBUTE_MODE);
+        final String modeString = modeProperty.get(this);
         return Mode.valueOf(modeString.toUpperCase());
     }
     public void setMode(Mode mode) {
@@ -125,8 +117,7 @@ public class OpenChemLibEditor extends AbstractSinglePropertyField<OpenChemLibEd
     }
 
     public boolean getFragment() {
-//        return fragmentProperty.get(this);
-        return getElement().getProperty(ATTRIBUTE_FRAGMENT)!=null;
+        return fragmentProperty.get(this);
     }
     public void setFragment(boolean fragment) {
 //        fragmentProperty.set(this, fragment);

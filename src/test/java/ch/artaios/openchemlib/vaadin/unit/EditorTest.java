@@ -10,7 +10,7 @@ public class EditorTest {
 
     @Test
     public void testGetIdCode() {
-        OpenChemLibEditor openChemLibEditor = new OpenChemLibEditor(false);
+        OpenChemLibEditor openChemLibEditor = new OpenChemLibEditor();
         openChemLibEditor.setValue("difH@BAIVUxZ`@@@");
         assertNotNull(openChemLibEditor);
         assertNotNull(openChemLibEditor.getValue());

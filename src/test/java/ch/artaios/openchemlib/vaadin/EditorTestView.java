@@ -20,8 +20,7 @@ public class EditorTestView extends VerticalLayout {
         final TextField idcode = new TextField();
         idcode.setWidthFull();
 
-        final OpenChemLibEditor openChemLibEditor = new OpenChemLibEditor();
-        openChemLibEditor.setReadonly(false);
+        final OpenChemLibEditor openChemLibEditor = new OpenChemLibEditor(OpenChemLibEditor.Mode.MOLECULE, true, true, false);
         openChemLibEditor.setValue("difH@BAIVUxZ`@@@");
         openChemLibEditor.addValueChangeListener(event -> {
             System.out.println("OpenChemLibEditor change event: " + openChemLibEditor.getValue());
@@ -55,6 +54,11 @@ public class EditorTestView extends VerticalLayout {
         add(new Checkbox("Readonly", event -> {
             openChemLibEditor.setReadonly(event.getValue());
             openChemLibEditor2.setReadonly(event.getValue());
+        }));
+
+        add(new Checkbox("Editable", true, event -> {
+            openChemLibEditor.setEditable(event.getValue());
+            openChemLibEditor2.setEditable(event.getValue());
         }));
 
         add(new Checkbox("Fragment", event -> {
