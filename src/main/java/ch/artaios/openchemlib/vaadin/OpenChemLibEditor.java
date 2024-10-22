@@ -6,6 +6,8 @@ import com.vaadin.flow.component.contextmenu.MenuItem;
 import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.dependency.JsModule;
 import com.vaadin.flow.component.dependency.NpmPackage;
+import com.vaadin.flow.function.SerializableBiFunction;
+import com.vaadin.flow.function.SerializableFunction;
 
 @Tag("openchemlib-editor")
 @NpmPackage(value = "openchemlib", version = "8.16.0")
@@ -13,7 +15,7 @@ import com.vaadin.flow.component.dependency.NpmPackage;
 @JsModule("./openchemlib-editor-init.js")
 @CssImport("./openchemlib-editor.css")
 
-public class OpenChemLibEditor extends AbstractSinglePropertyField<OpenChemLibEditor, String> implements HasSize {
+public class OpenChemLibEditor<T> extends AbstractSinglePropertyField<OpenChemLibEditor<T>, T> implements HasSize {
     public enum Mode {
         MOLECULE,
         REACTION;
@@ -32,9 +34,8 @@ public class OpenChemLibEditor extends AbstractSinglePropertyField<OpenChemLibEd
 
     protected final ContextMenu contextMenu;
 
-    public OpenChemLibEditor() {
-        this(Mode.MOLECULE, false, false, true);
-    }
+    protected final SerializableBiFunction<OpenChemLibEditor<T>, String, T> presentationToModel;
+    protected final SerializableBiFunction<OpenChemLibEditor<T>, T, String> modelToPresentation;
 
     /**
      * Creates a new OpenChemLibEditor.
@@ -43,8 +44,12 @@ public class OpenChemLibEditor extends AbstractSinglePropertyField<OpenChemLibEd
      * @param readonly if true, the editor doesn't allow drawing (corresponds to OCL-JS readonly property/attribute)
      * @param editable if true, the editor is editable (e.g. by setting the idcode by pasting/dropping)
      */
-    public OpenChemLibEditor(Mode mode, boolean fragment, boolean readonly, boolean editable) {
-        super("idcode", "", true);
+    public <P> OpenChemLibEditor(Mode mode, boolean fragment, boolean readonly, boolean editable, T defaultValue, SerializableBiFunction<OpenChemLibEditor<T>, String, T> presentationToModel, SerializableBiFunction<OpenChemLibEditor<T>, T, String> modelToPresentation) {
+        super("idcode", defaultValue, String.class, presentationToModel, modelToPresentation);
+
+        // keep function references (needed in setValue)
+        this.presentationToModel = presentationToModel;
+        this.modelToPresentation = modelToPresentation;
 
         // set custom js event name
         setSynchronizedEvent("change");
@@ -81,8 +86,8 @@ public class OpenChemLibEditor extends AbstractSinglePropertyField<OpenChemLibEd
 
     /* Overriding property setter to enforce writing by attribute (see above) */
     @Override
-    public void setValue(String idcode) {
-        getElement().setAttribute(ATTRIBUTE_IDCODE, idcode);
+    public void setValue(T value) {
+        getElement().setAttribute(ATTRIBUTE_IDCODE, modelToPresentation.apply(null, value));
     }
 
     public boolean getReadonly() {

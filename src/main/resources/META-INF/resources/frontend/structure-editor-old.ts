@@ -3,7 +3,7 @@ import {property, customElement} from 'lit/decorators.js';
 import OCL from 'openchemlib/full.pretty.js';
 
 @customElement('structure-editor')
-export class StructureEditor extends LitElement {
+export class StructureEditorOld extends LitElement {
     @property({type: String, reflect: true})
     idcode: string | null = "";
     @property({type: Boolean, reflect: true})
@@ -31,7 +31,7 @@ export class StructureEditor extends LitElement {
     connectedCallback() {
         super.connectedCallback();
         if(!this.getAttribute('id'))
-            this.setAttribute("id", this.tagName + "_" + (++StructureEditor.id));
+            this.setAttribute("id", this.tagName + "_" + (++StructureEditorOld.id));
         this.log('connectedCallback');
         this.init();
     }
@@ -109,16 +109,16 @@ export class StructureEditor extends LitElement {
 
     _setActiveEditor() {
         this.log('setActiveEditor');
-        StructureEditor.activeEditor = this;
+        StructureEditorOld.activeEditor = this;
     }
 
     // In the following method "this" is undefined and therefor needs special bookkeeping (see "setActiveEditor()")!
     _changeMolecule(idcode: string, molecule: OCL.Molecule) {
-        if(StructureEditor.activeEditor) {
-            StructureEditor.activeEditor.log('changeMolecule callback: ' + idcode);
-            StructureEditor.activeEditor.idcode = idcode;
+        if(StructureEditorOld.activeEditor) {
+            StructureEditorOld.activeEditor.log('changeMolecule callback: ' + idcode);
+            StructureEditorOld.activeEditor.idcode = idcode;
             // event name is must be propertyname-changed!!!
-            StructureEditor.activeEditor.dispatchEvent(new CustomEvent('idcode-changed', {detail: idcode,}));
+            StructureEditorOld.activeEditor.dispatchEvent(new CustomEvent('idcode-changed', {detail: idcode,}));
         }
     }
 

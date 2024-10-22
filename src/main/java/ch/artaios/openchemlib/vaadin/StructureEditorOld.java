@@ -9,8 +9,8 @@ import com.vaadin.flow.component.dependency.NpmPackage;
 @Tag("structure-editor")
 @NpmPackage(value = "openchemlib", version = "8.16.0")
 @JsModule(value = "openchemlib/full.pretty.js")
-@JsModule(value = "./structure-editor.ts")
-@CssImport(value = "./structure-editor.css")
+@JsModule(value = "./structure-editor-old.ts")
+@CssImport(value = "./structure-editor-old.css")
 /*
  If you wish to include your own JS modules in the add-on jar, add the module
  files to './src/main/resources/META-INF/resources/frontend' and insert an
