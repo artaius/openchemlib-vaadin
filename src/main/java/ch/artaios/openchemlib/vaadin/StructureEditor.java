@@ -26,8 +26,10 @@ public class StructureEditor extends OpenChemLibEditor<StereoMolecule> {
     public final static SerializableBiFunction<OpenChemLibEditor<StereoMolecule>, String, StereoMolecule> PRESENTATION_TO_MODEL = new SerializableBiFunction<>() {
         @Override
         public StereoMolecule apply(OpenChemLibEditor openChemLibEditor, String idcode) {
+            // TODO: check why idcode with no coordinates (but trailing space) appear.
+            idcode = idcode!=null?idcode.trim():null;
             StereoMolecule stereoMolecule = new StereoMolecule();
-            IDCodeParser parser = new IDCodeParser();
+            IDCodeParser parser = new IDCodeParser(true);
             parser.parse(stereoMolecule, idcode);
             return stereoMolecule;
         }
@@ -35,7 +37,10 @@ public class StructureEditor extends OpenChemLibEditor<StereoMolecule> {
     public final static SerializableBiFunction<OpenChemLibEditor<StereoMolecule>, StereoMolecule, String> MODEL_TO_PRESENTATION = new SerializableBiFunction<>() {
         @Override
         public String apply(OpenChemLibEditor openChemLibEditor, StereoMolecule stereoMolecule) {
-            return String.format("%s %s", stereoMolecule.getIDCode(), stereoMolecule.getIDCoordinates());
+            if(stereoMolecule.getIDCoordinates()!=null && !stereoMolecule.getIDCoordinates().isBlank())
+                return String.format("%s %s", stereoMolecule.getIDCode(), stereoMolecule.getIDCoordinates());
+            else
+                return stereoMolecule.getIDCode();
         }
     };
 

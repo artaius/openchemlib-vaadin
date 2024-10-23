@@ -2,8 +2,8 @@ import {html, LitElement, PropertyValues, TemplateResult} from 'lit';
 import {property, customElement} from 'lit/decorators.js';
 import OCL from 'openchemlib/full.pretty.js';
 
-@customElement('structure-view')
-export class StructureView extends LitElement {
+@customElement('structure-view-old')
+export class StructureViewOld extends LitElement {
     @property({type: String, reflect: true})
     idcode: string = "";
     @property({type: Boolean, reflect: true})
@@ -23,7 +23,7 @@ export class StructureView extends LitElement {
     connectedCallback(): void {
         super.connectedCallback();
         if(!this.getAttribute('id'))
-            this.setAttribute("id", this.tagName + "_" + (++StructureView.id));
+            this.setAttribute("id", this.tagName + "_" + (++StructureViewOld.id));
         this.log('connectedCallback');
         this.init();
     }
@@ -136,6 +136,6 @@ export class StructureView extends LitElement {
 
 declare global {
     interface HTMLElementTagNameMap {
-        'structure-view': StructureView;
+        'structure-view': StructureViewOld;
     }
 }

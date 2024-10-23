@@ -1,31 +1,40 @@
 package ch.artaios.openchemlib.vaadin;
 
+import com.vaadin.flow.component.Unit;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.Route;
+import com.vaadin.flow.router.RouteAlias;
 
-/**
- * Project: openchemlib-vaadin
- * Date:    17.10.24
- * <p>
- * Copyright (c) 2017 - 2024
- * Idorsia Pharmaceuticals Ltd.
- * Hegenheimermattweg 91
- * CH-4123 Allschwil, Switzerland
- * <p>
- * All Rights Reserved.
- * <p>
- * This software is the proprietary information of Idorsia Pharmaceuticals, Ltd.
- * Use is subject to license terms.
- * <p>
- * Author: Roman Bär
- */
 
 @Route("structureviewtestview")
 public class StructureViewTestView extends VerticalLayout {
+
+    private StructureEditor sv2;
+
     public StructureViewTestView() {
-        StructureView structureView = new StructureView();
-//        structureView.setValue("gJX@@eKU@@ gGQHDHaImfh@!defH@DAIfUVjj`@##!R_vp@[G|S@AL]MHH !Rb@K~@Hc}b@JH?QwRH` !R?g~w?Xc}mpK~_x`Bm?vw?Xc}GYh|##");
-        structureView.setValue("gJX@@eKU@@");
-        add(structureView);
+        StructureView structureView1 = new StructureView(false, true);
+        structureView1.setValue(StructureEditor.PRESENTATION_TO_MODEL.apply(null, "difH@BAIVUxZ`@@@"));
+        structureView1.setWidth(200, Unit.POINTS);
+        structureView1.setHeight(150, Unit.POINTS);
+        add(structureView1);
+
+        StructureView structureView2 = new StructureView(false, true);
+        structureView2.setWidth(200, Unit.POINTS);
+        structureView2.setHeight(150, Unit.POINTS);
+        add(structureView2);
+
+        StructureView structureView3 = new StructureView(true, false);
+        structureView3.setValue(StructureEditor.PRESENTATION_TO_MODEL.apply(null, "deVH@JAIgeQfj@@@MhS}xq| !BBKtH?Gy?BKtH_Gz?BKtHoWz?"));
+        structureView3.setWidth(200, Unit.POINTS);
+        structureView3.setHeight(150, Unit.POINTS);
+        add(structureView3);
+
+        StructureEditorDialog structureEditorDialog = new StructureEditorDialog(false);
+        structureEditorDialog.addValueChangeListener(event -> {
+            System.out.println("OpenChemLibEditor change event: " + structureEditorDialog.structureView.getValue().getIDCode());
+        });
+        add(structureEditorDialog);
+
     }
 }

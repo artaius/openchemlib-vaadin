@@ -8,6 +8,7 @@ import com.vaadin.flow.component.dependency.JsModule;
 import com.vaadin.flow.component.dependency.NpmPackage;
 import com.vaadin.flow.function.SerializableBiFunction;
 import com.vaadin.flow.function.SerializableFunction;
+import com.vaadin.flow.shared.Registration;
 
 @Tag("openchemlib-editor")
 @NpmPackage(value = "openchemlib", version = "8.16.0")
@@ -83,6 +84,12 @@ public class OpenChemLibEditor<T> extends AbstractSinglePropertyField<OpenChemLi
      * TODO recheck in a later version of OCL-JS if problem still persists
      */
 
+    @Override
+    public T getValue() {
+        String idcode = getElement().getAttribute(ATTRIBUTE_IDCODE);
+        String idcode2 = getElement().getProperty(ATTRIBUTE_IDCODE);
+        return presentationToModel.apply(null, idcode2);
+    }
 
     /* Overriding property setter to enforce writing by attribute (see above) */
     @Override
@@ -129,14 +136,14 @@ public class OpenChemLibEditor<T> extends AbstractSinglePropertyField<OpenChemLi
         getElement().setAttribute(ATTRIBUTE_FRAGMENT, fragment);
     }
 
-//    public Registration addDblClickListener(ComponentEventListener<DblClickEvent> listener) {
-//        return addListener(DblClickEvent.class, listener);
-//    }
-//
-//    @DomEvent("dblclick")
-//    public static class DblClickEvent extends ComponentEvent<OpenChemLibEditor> {
-//        public DblClickEvent(OpenChemLibEditor source, boolean fromClient) {
-//            super(source, fromClient);
-//        }
-//    }
+    public Registration addDblClickListener(ComponentEventListener<DblClickEvent> listener) {
+        return addListener(DblClickEvent.class, listener);
+    }
+
+    @DomEvent("dblclick")
+    public static class DblClickEvent extends ComponentEvent<OpenChemLibEditor> {
+        public DblClickEvent(OpenChemLibEditor source, boolean fromClient) {
+            super(source, fromClient);
+        }
+    }
 }

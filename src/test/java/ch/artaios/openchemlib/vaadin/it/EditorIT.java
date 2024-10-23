@@ -1,6 +1,6 @@
 package ch.artaios.openchemlib.vaadin.it;
 
-import ch.artaios.openchemlib.vaadin.EditorTestView;
+import ch.artaios.openchemlib.vaadin.StructureEditorTestView;
 import com.microsoft.playwright.Browser;
 import com.microsoft.playwright.BrowserType;
 import com.microsoft.playwright.Locator;
@@ -64,7 +64,7 @@ public class EditorIT {
 
     @Test
     public void testEditorTestView() {
-        String rootUrl = "http://localhost:" + port + "/" + EditorTestView.class.getSimpleName().toLowerCase();
+        String rootUrl = "http://localhost:" + port + "/" + StructureEditorTestView.class.getSimpleName().toLowerCase();
         page.navigate(rootUrl);
 
         Locator locator = page.locator("#input-vaadin-text-field-20");

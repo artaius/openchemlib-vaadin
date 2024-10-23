@@ -1,5 +1,6 @@
 package ch.artaios.openchemlib.vaadin;
 
+import com.actelion.research.chem.StereoMolecule;
 import com.vaadin.flow.component.AbstractField;
 import com.vaadin.flow.component.HasValue;
 import com.vaadin.flow.component.button.Button;
@@ -20,8 +21,7 @@ public class StructureEditorDialog extends VerticalLayout {
     public StructureEditorDialog(boolean fragment) {
         this.setPadding(false);
         dialog = new Dialog("Structure Editor");
-        structureView = new StructureView(true);
-        structureView.setSizeFull();
+        structureView = new StructureView(fragment, true);
         structureEditor = new StructureEditor(fragment);
 
         dialog.setDraggable(true);
@@ -29,7 +29,8 @@ public class StructureEditorDialog extends VerticalLayout {
         dialog.add(structureEditor);
 
         Button okButton = new Button("Ok", e -> {
-            structureView.setValue(StructureEditor.MODEL_TO_PRESENTATION.apply(null, structureEditor.getValue()));
+            StereoMolecule value = structureEditor.getValue();
+            structureView.setValue(value);
             dialog.close();
         });
         Button cancelButton = new Button("Cancel", e -> {
@@ -39,19 +40,14 @@ public class StructureEditorDialog extends VerticalLayout {
         dialog.getFooter().add(okButton);
 
         structureView.addDblClickListener(event -> {
-            final String idCode = structureView.getValue();
-            structureEditor.setValue(StructureEditor.PRESENTATION_TO_MODEL.apply(null, idCode));
+            structureEditor.setValue(structureView.getValue());
             dialog.open();
         });
 
         add(dialog, structureView);
     }
 
-    public String getIdCode() {
-        return structureView.getValue();
-    }
-
-    public void addValueChangeListener(HasValue.ValueChangeListener<AbstractField.ComponentValueChangeEvent<StructureView, String>> listener) {
+    public void addValueChangeListener(HasValue.ValueChangeListener<AbstractField.ComponentValueChangeEvent<OpenChemLibEditor<StereoMolecule>, StereoMolecule>> listener) {
         structureView.addValueChangeListener(listener);
     }
 }
