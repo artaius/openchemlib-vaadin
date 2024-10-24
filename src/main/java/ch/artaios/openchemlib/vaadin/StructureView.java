@@ -23,6 +23,10 @@ import com.vaadin.flow.function.SerializableBiFunction;
 
 public class StructureView extends OpenChemLibEditor<StereoMolecule> {
     public StructureView(boolean fragment, boolean editable) {
-        super(Mode.MOLECULE, fragment, true, editable, new StereoMolecule(), StructureEditor.PRESENTATION_TO_MODEL, StructureEditor.MODEL_TO_PRESENTATION);
+        this(fragment, true, editable);
+    }
+
+    public StructureView(boolean fragment, boolean readonly, boolean editable) {
+        super(Mode.MOLECULE, fragment, readonly, editable, new StereoMolecule(), StructureEditor.PRESENTATION_TO_MODEL, StructureEditor.MODEL_TO_PRESENTATION);
     }
 }

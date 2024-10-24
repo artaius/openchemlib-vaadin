@@ -21,7 +21,7 @@ public class StructureEditorDialog extends VerticalLayout {
     public StructureEditorDialog(boolean fragment) {
         this.setPadding(false);
         dialog = new Dialog("Structure Editor");
-        structureView = new StructureView(fragment, true);
+        structureView = new StructureView(fragment, true, true);
         structureEditor = new StructureEditor(fragment);
 
         dialog.setDraggable(true);
@@ -40,7 +40,8 @@ public class StructureEditorDialog extends VerticalLayout {
         dialog.getFooter().add(okButton);
 
         structureView.addDblClickListener(event -> {
-            structureEditor.setValue(structureView.getValue());
+            StereoMolecule value = structureView.getValue();
+            structureEditor.setValue(value);
             dialog.open();
         });
 

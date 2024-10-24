@@ -22,18 +22,27 @@ try {
 
         this.ondrop = function(e) {
             e.preventDefault();
-            if(e.dataTransfer != null){
+            if(e.dataTransfer != null) {
                 const data = e.dataTransfer.getData("text/plain");
-                if(this.mode ===  CanvasEditorElement.MODE.MOLECULE)
-                    this.setAttribute('idcode', anyMolStringToIdCode(data));
-                else
-                    this.setAttribute('idcode', anyRxnStringToIdCode(data));
+                console.info("Dropping data: " + data);
+                if(this.mode ===  CanvasEditorElement.MODE.MOLECULE) {
+                    const value = anyMolStringToIdCode(data);
+                    console.info("Dropped data: " + value);
+                    // this.setAttribute('idcode', value);
+                    this.idcode = value;
+                } else {
+                    const value = anyRxnStringToIdCode(data);
+                    console.info("Dropped data: " + value);
+                    // this.setAttribute('idcode', value);
+                    this.idcode = value;
                 }
+                this.#handleChange({type: 'molecule', isUserEvent: true});
+            }
         }
     }
 
     CanvasEditorElement.prototype.copy=function() {
-        navigator.clipboard.writeText(this.idcode); //.then(r => console.info('idcode copied'));
+        navigator.clipboard.writeText(this.getAttribute('idcode')); //.then(r => console.info('idcode copied'));
     }
 
     CanvasEditorElement.prototype.paste=function() {
@@ -48,10 +57,19 @@ try {
         //     })
         // });
         navigator.clipboard.readText().then(data => {
+            console.info("Pasting data: " + data);
             if(this.mode ===  CanvasEditorElement.MODE.MOLECULE)
-                this.setAttribute('idcode', anyMolStringToIdCode(data));
-            else
-                this.setAttribute('idcode', anyRxnStringToIdCode(data));
+            {
+                const value = anyMolStringToIdCode(data);
+                console.info("Pasted data: " + data);
+                // this.setAttribute('idcode', value);
+                this.idcode = value;
+            } else {
+                const value = anyRxnStringToIdCode(data);
+                console.info("Pasted data: " + data);
+                // this.setAttribute('idcode', value);
+                this.idcode = value;
+            }
         });
     };
 

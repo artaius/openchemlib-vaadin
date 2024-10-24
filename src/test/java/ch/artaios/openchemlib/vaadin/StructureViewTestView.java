@@ -22,6 +22,9 @@ public class StructureViewTestView extends VerticalLayout {
         StructureView structureView2 = new StructureView(false, true);
         structureView2.setWidth(200, Unit.POINTS);
         structureView2.setHeight(150, Unit.POINTS);
+        structureView2.addValueChangeListener(event -> {
+            System.out.println("StructureView2 change event: " + structureView2.getValue().getIDCode());
+        });
         add(structureView2);
 
         StructureView structureView3 = new StructureView(true, false);
@@ -32,7 +35,7 @@ public class StructureViewTestView extends VerticalLayout {
 
         StructureEditorDialog structureEditorDialog = new StructureEditorDialog(false);
         structureEditorDialog.addValueChangeListener(event -> {
-            System.out.println("OpenChemLibEditor change event: " + structureEditorDialog.structureView.getValue().getIDCode());
+            System.out.println("StructureEditorDialog change event: " + structureEditorDialog.structureView.getValue().getIDCode());
         });
         add(structureEditorDialog);
 

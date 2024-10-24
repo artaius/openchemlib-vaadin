@@ -26,10 +26,11 @@ public class StructureEditor extends OpenChemLibEditor<StereoMolecule> {
     public final static SerializableBiFunction<OpenChemLibEditor<StereoMolecule>, String, StereoMolecule> PRESENTATION_TO_MODEL = new SerializableBiFunction<>() {
         @Override
         public StereoMolecule apply(OpenChemLibEditor openChemLibEditor, String idcode) {
+            System.out.println("PRESENTATION_TO_MODEL: " + idcode);
             // TODO: check why idcode with no coordinates (but trailing space) appear.
             idcode = idcode!=null?idcode.trim():null;
             StereoMolecule stereoMolecule = new StereoMolecule();
-            IDCodeParser parser = new IDCodeParser(true);
+            IDCodeParser parser = new IDCodeParser();
             parser.parse(stereoMolecule, idcode);
             return stereoMolecule;
         }

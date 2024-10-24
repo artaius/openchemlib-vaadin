@@ -10,6 +10,8 @@ import com.vaadin.flow.function.SerializableBiFunction;
 import com.vaadin.flow.function.SerializableFunction;
 import com.vaadin.flow.shared.Registration;
 
+import java.util.List;
+
 @Tag("openchemlib-editor")
 @NpmPackage(value = "openchemlib", version = "8.16.0")
 @JsModule("openchemlib/full.pretty.js")
@@ -54,6 +56,7 @@ public class OpenChemLibEditor<T> extends AbstractSinglePropertyField<OpenChemLi
 
         // set custom js event name
         setSynchronizedEvent("change");
+//        setSynchronizedEvent("idcode-changed");
 
         // init Vaadin specific JS
         getElement().executeJs("this.init();");
@@ -86,15 +89,19 @@ public class OpenChemLibEditor<T> extends AbstractSinglePropertyField<OpenChemLi
 
     @Override
     public T getValue() {
-        String idcode = getElement().getAttribute(ATTRIBUTE_IDCODE);
-        String idcode2 = getElement().getProperty(ATTRIBUTE_IDCODE);
-        return presentationToModel.apply(null, idcode2);
+        List<String> idcode1 = getElement().getAttributeNames().toList();
+        List<String> idcode2 = getElement().getPropertyNames().toList();
+        System.out.println(idcode1);
+        System.out.println(idcode2);
+        return super.getValue();
     }
 
     /* Overriding property setter to enforce writing by attribute (see above) */
     @Override
     public void setValue(T value) {
-        getElement().setAttribute(ATTRIBUTE_IDCODE, modelToPresentation.apply(null, value));
+        String idcode = modelToPresentation.apply(null, value);
+        System.out.println("setValue: " + idcode);
+        getElement().setAttribute(ATTRIBUTE_IDCODE, idcode);
     }
 
     public boolean getReadonly() {
@@ -104,7 +111,8 @@ public class OpenChemLibEditor<T> extends AbstractSinglePropertyField<OpenChemLi
         // readonlyProperty.set(this, readonly);
         getElement().setAttribute(ATTRIBUTE_READONLY, readonly);
 
-        // set draggable only if in readonly (non-drawing mode)
+        // set draggable only if in readonly (non-drawing mode).
+        // setting the attribute does not work, so we use the property
         getElement().setProperty("draggable", readonly);
     }
 
