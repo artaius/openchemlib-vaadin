@@ -20,7 +20,7 @@ public class EditorTestView extends VerticalLayout {
         final TextField idcode = new TextField();
         idcode.setWidthFull();
 
-        final OpenChemLibEditor openChemLibEditor = new OpenChemLibEditor(OpenChemLibEditor.Mode.MOLECULE, true, true, false);
+        final OpenChemLibEditor openChemLibEditor = new OpenChemLibEditor(OpenChemLibEditor.Mode.MOLECULE, false, true, true);
         openChemLibEditor.setValue("difH@BAIVUxZ`@@@");
         openChemLibEditor.addValueChangeListener(event -> {
             System.out.println("OpenChemLibEditor change event: " + openChemLibEditor.getValue());
@@ -38,20 +38,12 @@ public class EditorTestView extends VerticalLayout {
 
         add(new TextField());
 
-        final OpenChemLibEditor openChemLibEditor2 = new OpenChemLibEditor();
-        openChemLibEditor2.setReadonly(false);
-        openChemLibEditor2.setMode(OpenChemLibEditor.Mode.REACTION);
+        final OpenChemLibEditor openChemLibEditor2 = new OpenChemLibEditor(OpenChemLibEditor.Mode.REACTION, false, true, true);
         openChemLibEditor2.setValue("gJX@@eKU@@ gGQHDHaImfh@!defH@DAIfUVjj`@");
         openChemLibEditor2.addValueChangeListener(event -> System.out.println("OpenChemLibEditor2 change event: " + openChemLibEditor2.getValue()));
         add(openChemLibEditor2);
 
-        add(new Checkbox("Mode Reaction", event -> {
-            final OpenChemLibEditor.Mode mode = event.getValue() ? OpenChemLibEditor.Mode.REACTION : OpenChemLibEditor.Mode.MOLECULE;
-            openChemLibEditor.setMode(mode);
-            openChemLibEditor2.setMode(mode);
-        }));
-
-        add(new Checkbox("Readonly", event -> {
+        add(new Checkbox("Readonly", true, event -> {
             openChemLibEditor.setReadonly(event.getValue());
             openChemLibEditor2.setReadonly(event.getValue());
         }));

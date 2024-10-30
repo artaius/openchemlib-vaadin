@@ -52,37 +52,8 @@ mvn install -Pproduction
 
 ### OCL hacks
 Following changes are directly applied to the node module sources in ```node_modules/openchemlib/lib/canvas_editor```!
-To make those changes active in dev mode, delete ```src/main/bundles/dev.bundle``` initiate ```mvn clean``` & rerun the project.
-**This also needs to be done in dependant projects!!!**
+To make those changes active in dev mode, delete ```src/main/bundles/dev.bundle``` initiate ```mvn clean``` & rerun the project or apply changes directly in ```target/dev-bundle/webapp/VAADIN/build/generated-flow-imports-***.js```.
+**This also needs to be done in dependant projects as also there the sources are downloaded directly from npm!!!**
 
-- Replace line 111 by
-  ```js
-    #handleChange = (editorEventOnChange) => {
-      const domEvent = new CustomEvent('change', {
-        detail: editorEventOnChange,
-        composed: true,
-      });
-      if (editorEventOnChange.type == 'molecule') {
-          console.info('editor-changed');
-
-          switch (this.mode) {
-              case CanvasEditorElement.MODE.MOLECULE: {
-                  this.idcode = this.getMolecule().getIDCode();
-                  break;
-              }
-              case CanvasEditorElement.MODE.REACTION: {
-                  this.idcode = ReactionEncoder.encode(this.getReaction());
-                  break;
-              }
-              default:
-                  throw new Error(`Mode ${this.mode} is not supported`);
-          }
-          this.dispatchEvent(domEvent);
-      }
-    };
-  ```
-  in ```node_modules/openchemlib/lib/canvas_editor/init/canvas_editor_element.js```
-
-- **Belows code is only needed as workaround for Bug in Firefox 100.0.2**  
-  Comment line 42 (```shadowRoot.adoptedStyleSheets = [getEditorStylesheet()];```) in ```node_modules/openchemlib/lib/canvas_editor/create_editor.js```. 
-
+- Comment line 85 (```if (this.#isReadOnly) return;```) in ```node_modules/openchemlib/lib/canvas_editor/init/canvas_editor.js```. 
+- Comment line 123 (```if (this.#isReadOnly) return;```) in ```node_modules/openchemlib/lib/canvas_editor/init/canvas_editor.js```. 

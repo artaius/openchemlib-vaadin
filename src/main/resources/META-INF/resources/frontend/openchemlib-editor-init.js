@@ -25,10 +25,10 @@ try {
             if(e.dataTransfer != null){
                 const data = e.dataTransfer.getData("text/plain");
                 if(this.mode ===  CanvasEditorElement.MODE.MOLECULE)
-                    this.setAttribute('idcode', anyMolStringToIdCode(data));
+                    this.idcode = anyMolStringToIdCode(data);
                 else
-                    this.setAttribute('idcode', anyRxnStringToIdCode(data));
-                }
+                    this.idcode = anyRxnStringToIdCode(data);
+            }
         }
     }
 
@@ -48,10 +48,10 @@ try {
         //     })
         // });
         navigator.clipboard.readText().then(data => {
-            if(this.mode ===  CanvasEditorElement.MODE.MOLECULE)
-                this.setAttribute('idcode', anyMolStringToIdCode(data));
+            if (this.mode === CanvasEditorElement.MODE.MOLECULE)
+                this.idcode = anyMolStringToIdCode(data);
             else
-                this.setAttribute('idcode', anyRxnStringToIdCode(data));
+                this.idcode = anyRxnStringToIdCode(data);
         });
     };
 

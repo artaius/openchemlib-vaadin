@@ -14,6 +14,9 @@ import com.vaadin.flow.component.dependency.NpmPackage;
 @CssImport("./openchemlib-editor.css")
 
 public class OpenChemLibEditor extends AbstractSinglePropertyField<OpenChemLibEditor, String> implements HasSize {
+    private boolean initialized;
+    private String initialIdcode;
+
     public enum Mode {
         MOLECULE,
         REACTION;
@@ -52,6 +55,12 @@ public class OpenChemLibEditor extends AbstractSinglePropertyField<OpenChemLibEd
         // init Vaadin specific JS
         getElement().executeJs("this.init();");
 
+        // set initial values
+        setMode(mode);
+        setFragment(fragment);
+        setReadonly(readonly);
+        setEditable(editable);
+
         // create context menu
         contextMenu = new ContextMenu(this);
         contextMenu.addItem("Copy", event -> {
@@ -64,11 +73,6 @@ public class OpenChemLibEditor extends AbstractSinglePropertyField<OpenChemLibEd
         });
         paste.setEnabled(editable);
 
-        // set initial values
-        setMode(mode);
-        setFragment(fragment);
-        setReadonly(readonly);
-        setEditable(editable);
     }
 
     /* Due to a bug in OCL-JS where "CanvasEditorElement.#state"
@@ -78,11 +82,28 @@ public class OpenChemLibEditor extends AbstractSinglePropertyField<OpenChemLibEd
      * TODO recheck in a later version of OCL-JS if problem still persists
      */
 
+    @Override
+    protected void onAttach(AttachEvent attachEvent) {
+        super.onAttach(attachEvent);
+        initialized = true;
+        getElement().setAttribute(ATTRIBUTE_IDCODE, initialIdcode);
+    }
 
     /* Overriding property setter to enforce writing by attribute (see above) */
     @Override
     public void setValue(String idcode) {
-        getElement().setAttribute(ATTRIBUTE_IDCODE, idcode);
+        if(initialized)
+            getElement().setProperty(ATTRIBUTE_IDCODE, idcode);
+        else
+            initialIdcode = idcode;
+    }
+
+    @Override
+    public String getValue() {
+        if (initialized)
+            return super.getValue();
+        else
+            return getElement().getAttribute(ATTRIBUTE_IDCODE);
     }
 
     public boolean getReadonly() {
@@ -111,7 +132,7 @@ public class OpenChemLibEditor extends AbstractSinglePropertyField<OpenChemLibEd
         final String modeString = modeProperty.get(this);
         return Mode.valueOf(modeString.toUpperCase());
     }
-    public void setMode(Mode mode) {
+    private void setMode(Mode mode) {
 //        modeProperty.set(this, mode.name().toLowerCase());
         getElement().setAttribute(ATTRIBUTE_MODE, mode.name().toLowerCase());
     }
