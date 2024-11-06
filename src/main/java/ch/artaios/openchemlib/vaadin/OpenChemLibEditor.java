@@ -6,16 +6,18 @@ import com.vaadin.flow.component.contextmenu.MenuItem;
 import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.dependency.JsModule;
 import com.vaadin.flow.component.dependency.NpmPackage;
+import com.vaadin.flow.function.SerializableBiFunction;
+import com.vaadin.flow.shared.Registration;
 
 @Tag("openchemlib-editor")
-@NpmPackage(value = "openchemlib", version = "8.16.0")
+@NpmPackage(value = "openchemlib", version = "8.17.0")
 @JsModule("openchemlib/full.pretty.js")
 @JsModule("./openchemlib-editor-init.js")
 @CssImport("./openchemlib-editor.css")
 
-public class OpenChemLibEditor extends AbstractSinglePropertyField<OpenChemLibEditor, String> implements HasSize {
+public abstract class OpenChemLibEditor<T> extends AbstractSinglePropertyField<OpenChemLibEditor<T>, T> implements HasSize {
     private boolean initialized;
-    private String initialIdcode;
+    private T initialValue;
 
     public enum Mode {
         MOLECULE,
@@ -35,9 +37,8 @@ public class OpenChemLibEditor extends AbstractSinglePropertyField<OpenChemLibEd
 
     protected final ContextMenu contextMenu;
 
-    public OpenChemLibEditor() {
-        this(Mode.MOLECULE, false, false, true);
-    }
+    protected final SerializableBiFunction<OpenChemLibEditor<T>, String, T> presentationToModel;
+    protected final SerializableBiFunction<OpenChemLibEditor<T>, T, String> modelToPresentation;
 
     /**
      * Creates a new OpenChemLibEditor.
@@ -46,8 +47,12 @@ public class OpenChemLibEditor extends AbstractSinglePropertyField<OpenChemLibEd
      * @param readonly if true, the editor doesn't allow drawing (corresponds to OCL-JS readonly property/attribute)
      * @param editable if true, the editor is editable (e.g. by setting the idcode by pasting/dropping)
      */
-    public OpenChemLibEditor(Mode mode, boolean fragment, boolean readonly, boolean editable) {
-        super("idcode", "", true);
+    public <P> OpenChemLibEditor(Mode mode, boolean fragment, boolean readonly, boolean editable, T defaultValue, SerializableBiFunction<OpenChemLibEditor<T>, String, T> presentationToModel, SerializableBiFunction<OpenChemLibEditor<T>, T, String> modelToPresentation) {
+        super("idcode", defaultValue, String.class, presentationToModel, modelToPresentation);
+
+        // keep function references (needed in setValue)
+        this.presentationToModel = presentationToModel;
+        this.modelToPresentation = modelToPresentation;
 
         // set custom js event name
         setSynchronizedEvent("change");
@@ -75,6 +80,14 @@ public class OpenChemLibEditor extends AbstractSinglePropertyField<OpenChemLibEd
 
     }
 
+    @Override
+    protected void onAttach(AttachEvent attachEvent) {
+        super.onAttach(attachEvent);
+        initialized = true;
+        if (initialValue != null)
+            getElement().setAttribute(ATTRIBUTE_IDCODE, modelToPresentation.apply(null, initialValue));
+    }
+
     /* Due to a bug in OCL-JS where "CanvasEditorElement.#state"
      * is not initialized early enough (it is initialized on connectedCallback)
      * properties are set by attribute instead of property.
@@ -83,33 +96,28 @@ public class OpenChemLibEditor extends AbstractSinglePropertyField<OpenChemLibEd
      */
 
     @Override
-    protected void onAttach(AttachEvent attachEvent) {
-        super.onAttach(attachEvent);
-        initialized = true;
-        getElement().setAttribute(ATTRIBUTE_IDCODE, initialIdcode);
+    public T getValue() {
+        if (initialized)
+            return super.getValue();
+        else
+            return initialValue;
     }
 
     /* Overriding property setter to enforce writing by attribute (see above) */
     @Override
-    public void setValue(String idcode) {
-        if(initialized)
+    public void setValue(T value) {
+        if(initialized) {
+            String idcode = modelToPresentation.apply(null, value);
             getElement().setProperty(ATTRIBUTE_IDCODE, idcode);
-        else
-            initialIdcode = idcode;
-    }
-
-    @Override
-    public String getValue() {
-        if (initialized)
-            return super.getValue();
-        else
-            return getElement().getAttribute(ATTRIBUTE_IDCODE);
+        } else {
+            initialValue = value;
+        }
     }
 
     public boolean getReadonly() {
         return readonlyProperty.get(this);
     }
-    public void setReadonly(boolean readonly) {
+    protected void setReadonly(boolean readonly) {
         // readonlyProperty.set(this, readonly);
         getElement().setAttribute(ATTRIBUTE_READONLY, readonly);
 
@@ -132,7 +140,7 @@ public class OpenChemLibEditor extends AbstractSinglePropertyField<OpenChemLibEd
         final String modeString = modeProperty.get(this);
         return Mode.valueOf(modeString.toUpperCase());
     }
-    private void setMode(Mode mode) {
+    protected void setMode(Mode mode) {
 //        modeProperty.set(this, mode.name().toLowerCase());
         getElement().setAttribute(ATTRIBUTE_MODE, mode.name().toLowerCase());
     }
@@ -145,14 +153,18 @@ public class OpenChemLibEditor extends AbstractSinglePropertyField<OpenChemLibEd
         getElement().setAttribute(ATTRIBUTE_FRAGMENT, fragment);
     }
 
-//    public Registration addDblClickListener(ComponentEventListener<DblClickEvent> listener) {
-//        return addListener(DblClickEvent.class, listener);
-//    }
-//
-//    @DomEvent("dblclick")
-//    public static class DblClickEvent extends ComponentEvent<OpenChemLibEditor> {
-//        public DblClickEvent(OpenChemLibEditor source, boolean fromClient) {
-//            super(source, fromClient);
-//        }
-//    }
+    public Registration addDblClickListener(ComponentEventListener<DblClickEvent> listener) {
+        return addListener(DblClickEvent.class, listener);
+    }
+
+    @DomEvent("dblclick")
+    public static class DblClickEvent extends ComponentEvent<OpenChemLibEditor> {
+        public DblClickEvent(OpenChemLibEditor source, boolean fromClient) {
+            super(source, fromClient);
+        }
+    }
+
+    public ContextMenu getContextMenu() {
+        return contextMenu;
+    }
 }

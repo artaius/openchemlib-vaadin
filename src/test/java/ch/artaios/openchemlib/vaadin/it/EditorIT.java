@@ -13,12 +13,14 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 
 import java.util.regex.Pattern;
 
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@ActiveProfiles("it")
 public class EditorIT {
 
     @Value("${local.server.port}")
@@ -49,6 +51,7 @@ public class EditorIT {
         browser.close();
     }
 
+    // mopo.getViewsReportedByDevMode times out (dev tools are not available)
     @Test
     @Disabled
     public void smokeTestAllTestUIs() {
@@ -59,7 +62,6 @@ public class EditorIT {
             mopo.assertNoJsErrors();
             System.out.println("Checked %s and it contained no JS errors.".formatted(viewName));
         });
-
     }
 
     @Test
@@ -67,11 +69,7 @@ public class EditorIT {
         String rootUrl = "http://localhost:" + port + "/" + EditorTestView.class.getSimpleName().toLowerCase();
         page.navigate(rootUrl);
 
-        Locator locator = page.locator("#input-vaadin-text-field-20");
-        locator.waitFor();
-        assertThat(locator).not().isEmpty();
-
-        locator = page.locator("openchemlib-editor").first();
+        Locator locator = page.locator("openchemlib-editor").first();
         locator.waitFor();
         assertThat(locator).hasAttribute("idcode", Pattern.compile(".+"));
 

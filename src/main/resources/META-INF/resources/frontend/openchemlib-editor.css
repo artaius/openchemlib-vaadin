@@ -3,8 +3,6 @@ openchemlib-editor {
     border: none;
     border-radius: var(--lumo-border-radius-s);
     outline: 1px var(--lumo-utility-border-style, solid) var(--lumo-utility-border-color, var(--lumo-contrast-20pct));
-
-    margin: var(--lumo-space-s);
 }
 
 openchemlib-editor div {

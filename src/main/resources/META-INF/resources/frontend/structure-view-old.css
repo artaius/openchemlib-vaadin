@@ -1,5 +1,5 @@
 /* Styling for the whole element itself. */
-structure-view {
+structure-view-old {
     background-color: var(--lumo-contrast-10pct);
     /*border: 1px solid var(--lumo-primary-color);*/
     border-radius: var(--lumo-border-radius-l);
