@@ -70,7 +70,7 @@
         <dependency>
             <groupId>com.actelion.research</groupId>
             <artifactId>openchemlib</artifactId>
-            <version>2024.10.1</version>
+            <version>2024.11.1</version>
             <scope>provided</scope>
         </dependency>
 
