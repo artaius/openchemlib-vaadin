@@ -31,7 +31,7 @@ The following allows to experiment with the components in the browser.
 ### Building 
 To build production version run:
 ```bash
-mvn clean package
+mvn install -Pproduction
 ```
 
 ## Screenshots
