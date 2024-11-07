@@ -65,7 +65,6 @@ jobs:
           mvn \
             --no-transfer-progress \
             --batch-mode \
-            --activate-profiles production \
             -DskipTests=true \
             deploy
       - id: create_tag
