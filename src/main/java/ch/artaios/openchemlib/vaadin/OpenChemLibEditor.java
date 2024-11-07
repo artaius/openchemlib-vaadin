@@ -15,6 +15,9 @@ import com.vaadin.flow.shared.Registration;
 @JsModule("./openchemlib-editor-init.js")
 @CssImport("./openchemlib-editor.css")
 
+/**
+ * OpenChemLibEditor is aa abstract Vaadin component for drawing and displaying chemical structures/reactions.
+ */
 public abstract class OpenChemLibEditor<T> extends AbstractSinglePropertyField<OpenChemLibEditor<T>, T> implements HasSize {
     private boolean initialized;
     private T initialValue;
@@ -42,6 +45,11 @@ public abstract class OpenChemLibEditor<T> extends AbstractSinglePropertyField<O
 
     /**
      * Creates a new OpenChemLibEditor.
+     * @param <P> the presentation type
+     *           (e.g. StereoMolecule for molecules, Reaction for reactions)
+     * @param defaultValue the default value
+     * @param presentationToModel the function to convert the presentation value to the model value
+     * @param modelToPresentation the function to convert the model value to the presentation value
      * @param mode the editor mode (MOLECULE/REACTION)
      * @param fragment if true, fragment mode is enabled
      * @param readonly if true, the editor doesn't allow drawing (corresponds to OCL-JS readonly property/attribute)
@@ -103,9 +111,9 @@ public abstract class OpenChemLibEditor<T> extends AbstractSinglePropertyField<O
             return initialValue;
     }
 
-    /* Overriding property setter to enforce writing by attribute (see above) */
     @Override
     public void setValue(T value) {
+        // Handle lazy initialization
         if(initialized) {
             String idcode = modelToPresentation.apply(null, value);
             getElement().setProperty(ATTRIBUTE_IDCODE, idcode);

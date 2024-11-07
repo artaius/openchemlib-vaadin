@@ -1,6 +1,8 @@
 package ch.artaios.openchemlib.vaadin;
 
 import com.actelion.research.chem.IDCodeParser;
+import com.actelion.research.chem.IsomericSmilesCreator;
+import com.actelion.research.chem.SmilesParser;
 import com.actelion.research.chem.StereoMolecule;
 import com.actelion.research.chem.reaction.Reaction;
 import com.actelion.research.chem.reaction.ReactionEncoder;
@@ -23,7 +25,18 @@ import com.vaadin.flow.function.SerializableBiFunction;
  * Author: Roman Bär
  */
 
+/**
+ * Utility class for chemical operations.
+ * Provides methods to convert between different chemical representations.
+ */
 public class ChemUtils {
+    private final static SmilesParser SMILES_PARSER = new SmilesParser();
+
+    /**
+     * Returns a StereoMolecule from an idcode
+     * @param idcode the idcode
+     * @return the StereoMolecule
+     */
     public static StereoMolecule getStereoMolecule(String idcode) {
         // TODO: check why idcode with no coordinates (but trailing space) appear.
         idcode = idcode !=null? idcode.trim():null;
@@ -33,10 +46,36 @@ public class ChemUtils {
         return stereoMolecule;
     }
 
+    /**
+     * Returns a StereoMolecule from a SMILES string.
+     *
+     * @param smiles the SMILES string
+     * @return the StereoMolecule
+     * @throws Exception if parsing fails
+     */
+    public static StereoMolecule getStereoMoleculeFromSmiles(String smiles) throws Exception {
+        StereoMolecule stereoMolecule = new StereoMolecule();
+        SMILES_PARSER.parse(stereoMolecule, smiles);
+        return stereoMolecule;
+    }
+
+
+    /**
+     * Returns a Reaction from an idcode.
+     *
+     * @param idcode the idcode
+     * @return the Reaction
+     */
     public static Reaction getReaction(String idcode) {
         return ReactionEncoder.decode(idcode, true);
     }
 
+    /**
+     * Returns the idcode of a StereoMolecule.
+     *
+     * @param stereoMolecule the StereoMolecule
+     * @return the idcode
+     */
     public static String getIdcode(StereoMolecule stereoMolecule) {
         if(stereoMolecule==null)
             return null;
@@ -46,6 +85,26 @@ public class ChemUtils {
             return stereoMolecule.getIDCode();
     }
 
+    /**
+     * Returns the SMILES string of a StereoMolecule.
+     *
+     * @param stereoMolecule the StereoMolecule
+     * @return the SMILES string
+     */
+    public static String getSmiles(StereoMolecule stereoMolecule) {
+        if(stereoMolecule==null)
+            return null;
+        IsomericSmilesCreator smilesCreator = new IsomericSmilesCreator(stereoMolecule);
+
+        return smilesCreator.getSmiles();
+    }
+
+    /**
+     * Returns the idcode of a Reaction.
+     *
+     * @param reaction the Reaction
+     * @return the idcode
+     */
     public static String getIdcode(Reaction reaction) {
         if(reaction==null)
             return null;

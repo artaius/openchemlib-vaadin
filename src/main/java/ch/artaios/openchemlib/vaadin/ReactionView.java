@@ -19,7 +19,20 @@ import com.actelion.research.chem.reaction.Reaction;
  * Author: Roman Bär
  */
 
+/**
+ * View for reactions
+ * @see OpenChemLibEditor
+ */
 public class ReactionView extends OpenChemLibEditor<Reaction> {
+    /**
+     * Constructor
+     * @see OpenChemLibEditor
+     *
+     * Initializes the view with an empty reaction
+     *
+     * @param fragment if true, fragment mode is enabled
+     * @param editable if true, the editor is editable (e.g. by setting the idcode by pasting/dropping)
+     */
     public ReactionView(boolean fragment, boolean editable) {
         super(Mode.REACTION, fragment, true, editable, new Reaction(), ChemUtils.PRESENTATION_TO_MODEL_REACTION, ChemUtils.MODEL_TO_PRESENTATION_REACTION);
     }

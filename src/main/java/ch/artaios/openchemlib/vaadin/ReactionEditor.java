@@ -19,7 +19,19 @@ import com.actelion.research.chem.reaction.Reaction;
  * Author: Roman Bär
  */
 
+/**
+ * Editor for reactions
+ * @see OpenChemLibEditor
+ */
 public class ReactionEditor extends OpenChemLibEditor<Reaction> {
+    /**
+     * Constructor
+     * @see OpenChemLibEditor
+     *
+     * Initializes the editor with an empty reaction
+     *
+     * @param fragment if true, fragment mode is enabled
+     */
     public ReactionEditor(boolean fragment) {
         super(Mode.REACTION, fragment, false, true, new Reaction(), ChemUtils.PRESENTATION_TO_MODEL_REACTION, ChemUtils.MODEL_TO_PRESENTATION_REACTION);
     }

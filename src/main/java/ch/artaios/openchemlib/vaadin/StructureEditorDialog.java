@@ -9,7 +9,9 @@ import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 
-
+/**
+ * View for structures that is editable through a dialog (double click)
+ */
 @Uses(Dialog.class)
 @Uses(Button.class)
 @Uses(VerticalLayout.class)
@@ -19,6 +21,10 @@ public class StructureEditorDialog extends Div {
     protected final Dialog dialog;
     private final StructureEditor structureEditor;
 
+    /**
+     * Constructor
+     * @param fragment if true, fragment mode is enabled
+     */
     public StructureEditorDialog(boolean fragment) {
         dialog = new Dialog("Structure Editor");
         structureView = new StructureView(fragment, true);

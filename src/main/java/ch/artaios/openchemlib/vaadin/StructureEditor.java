@@ -1,8 +1,6 @@
 package ch.artaios.openchemlib.vaadin;
 
-import com.actelion.research.chem.IDCodeParser;
 import com.actelion.research.chem.StereoMolecule;
-import com.vaadin.flow.function.SerializableBiFunction;
 
 /**
  * Project: openchemlib-vaadin
@@ -21,7 +19,19 @@ import com.vaadin.flow.function.SerializableBiFunction;
  * Author: Roman Bär
  */
 
+/**
+ * Editor for structures
+ * @see OpenChemLibEditor
+ */
 public class StructureEditor extends OpenChemLibEditor<StereoMolecule> {
+    /**
+     * Constructor
+     * @see OpenChemLibEditor
+     *
+     * Initializes the editor with an empty structure
+     *
+     * @param fragment if true, fragment mode is enabled
+     */
     public StructureEditor(boolean fragment) {
         super(Mode.MOLECULE, fragment, false, true, new StereoMolecule(), ChemUtils.PRESENTATION_TO_MODEL_STRUCTURE, ChemUtils.MODEL_TO_PRESENTATION_STRUCTURE);
     }

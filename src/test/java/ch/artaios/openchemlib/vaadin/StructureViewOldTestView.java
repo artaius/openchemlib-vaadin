@@ -24,7 +24,6 @@ import com.vaadin.flow.router.Route;
 public class StructureViewOldTestView extends VerticalLayout {
     public StructureViewOldTestView() {
         StructureViewOld structureViewOld = new StructureViewOld();
-//        structureView.setValue("gJX@@eKU@@ gGQHDHaImfh@!defH@DAIfUVjj`@##!R_vp@[G|S@AL]MHH !Rb@K~@Hc}b@JH?QwRH` !R?g~w?Xc}mpK~_x`Bm?vw?Xc}GYh|##");
         structureViewOld.setValue("gJX@@eKU@@");
         add(structureViewOld);
     }
