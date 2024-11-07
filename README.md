@@ -28,12 +28,10 @@ The following allows to experiment with the components in the browser.
 1. Run `ch.artaios.TestServer` in `src/test/java/ch/artaios/openchemlib/vaadin`.
 2. Open https://localhost:8443 in the browser.
 
-### Building the production version 
+### Building 
 To build production version run:
 ```bash
-mvn clean
-mvn vaadin:clean-frontend
-mvn install -Pproduction
+mvn clean package
 ```
 
 ## Screenshots
