@@ -5,8 +5,8 @@
 Vaadin Java integration of the [OpenChemLib JS](https://github.com/cheminfo/openchemlib-js) components ([OpenChemLib JS](https://github.com/cheminfo/openchemlib-js) is the JavaScript port of the [OpenChemLib](https://github.com/Actelion/openchemlib) Java library).
 
 ## Usage
-Grab the precompiled jar file(s) from [Releases](https://github.com/artaius/openchemlib-vaadin/releases/latest) or
-add the following dependency to your project:
+Find it on [Vaadin addon directory](https://vaadin.com/directory/component/openchemlib-vaadin-components) or
+or directly add the following dependency to your project:
 ```xml
 <dependency>
     <groupId>ch.artaios</groupId>
@@ -14,6 +14,7 @@ add the following dependency to your project:
     <version>X.X.X</version>
 </dependency>
 ```
+Additionally you can also grab the precompiled jar file(s) from [Releases](https://github.com/artaius/openchemlib-vaadin/releases/latest).
 
 To be able to properly run in development mode, don't forget to add package ```ch.artaios``` to ```src/main/resources/application.properties``` like follows:
 ```properties

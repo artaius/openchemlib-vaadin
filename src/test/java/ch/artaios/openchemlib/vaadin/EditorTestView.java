@@ -34,15 +34,17 @@ public class EditorTestView extends VerticalLayout {
         smiles.setValueChangeMode(ValueChangeMode.EAGER);
         smiles.setWidthFull();
         smiles.addValueChangeListener(event -> {
-            try {
-                StereoMolecule stereoMoleculeFromSmiles = ChemUtils.getStereoMoleculeFromSmiles(event.getValue());
-                withinEvent.set(true);
-                structureEditor.setValue(stereoMoleculeFromSmiles);
-                withinEvent.set(false);
-            } catch (Exception e) {
-                Notification notification = new Notification(e.getMessage(), 3000);
-                notification.addThemeVariants(NotificationVariant.LUMO_ERROR);
-                notification.open();
+            if (event.isFromClient()) {
+                try {
+                    StereoMolecule stereoMoleculeFromSmiles = ChemUtils.getStereoMoleculeFromSmiles(event.getValue());
+                    withinEvent.set(true);
+                    structureEditor.setValue(stereoMoleculeFromSmiles);
+                    withinEvent.set(false);
+                } catch (Exception e) {
+                    Notification notification = new Notification(e.getMessage(), 3000);
+                    notification.addThemeVariants(NotificationVariant.LUMO_ERROR);
+                    notification.open();
+                }
             }
         });
 
