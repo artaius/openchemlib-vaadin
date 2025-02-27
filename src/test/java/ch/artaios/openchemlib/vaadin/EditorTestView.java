@@ -26,6 +26,11 @@ public class EditorTestView extends VerticalLayout {
         AtomicBoolean withinEvent = new AtomicBoolean(false);
         final StructureEditor structureEditor = new StructureEditor(false);
 
+        structureEditor.addAtomSelectionListener(event -> {
+            String message = "Atoms selected:\n" + event.getSelectedAtoms();
+            System.out.println(message);
+        });
+
         final TextField idcode = new TextField("IdCode");
         idcode.setWidthFull();
         idcode.setReadOnly(true);

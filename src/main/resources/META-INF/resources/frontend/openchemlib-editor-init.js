@@ -30,6 +30,28 @@ try {
                     this.idcode = anyRxnStringToIdCode(data);
             }
         }
+
+        this.addEventListener('change', function(e) {
+            if (e.detail.type === 'selection') {
+                var selAtoms = [];
+                var mol = this.getMolecule();
+                if (!mol) {
+                    return;
+                }
+                for (var i = 0, n = mol.getAllAtoms(); i < n; i++) {
+                    if (mol.isSelectedAtom(i)) {
+                        selAtoms.push(i);
+                    }
+                }
+                this.dispatchEvent(new CustomEvent('ocl-selectionchange', {
+                    detail: {
+                        type: e.detail.type,
+                        isUserEvent: e.detail.isUserEvent,
+                        selectedAtoms: selAtoms
+                    }
+                }));
+            }
+        });
     }
 
     CanvasEditorElement.prototype.copy=function() {
