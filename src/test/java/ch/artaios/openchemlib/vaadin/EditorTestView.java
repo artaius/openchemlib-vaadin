@@ -27,7 +27,7 @@ public class EditorTestView extends VerticalLayout {
         final StructureEditor structureEditor = new StructureEditor(false);
 
         structureEditor.addAtomSelectionListener(event -> {
-            String message = "Atoms selected in molecule:\n" + event.getSelectedMoleculeAtoms();
+            String message = "Atoms selected:\n" + event.getSelectedAtoms();
             System.out.println(message);
         });
 
@@ -82,12 +82,6 @@ public class EditorTestView extends VerticalLayout {
         // ---
 
         final ReactionEditor reactionEditor = new ReactionEditor(false);
-
-        reactionEditor.addAtomSelectionListener(event -> {
-            String message = "Atoms selected in reaction:\n" + event.getSelectedReactionAtoms();
-            System.out.println(message);
-        });
-
         reactionEditor.setValue(ChemUtils.getReaction("gJX@@eKU@@ gGQHDHaImfh@!defH@DAIfUVjj`@"));
         reactionEditor.addValueChangeListener(event -> System.out.println("ReactionEditor change event: " + reactionEditor.getValue()));
         reactionEditor.setWidth(45, Unit.VW);

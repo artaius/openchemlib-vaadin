@@ -33,62 +33,22 @@ try {
 
         this.addEventListener('change', function(e) {
             if (e.detail.type === 'selection') {
-                var selAtoms;
-                if (this.mode === CanvasEditorElement.MODE.MOLECULE) {
-                    // Handle single molecules
-                    var mol = this.getMolecule();
-                    if (!mol) {
-                        return;
-                    }
-                    selAtoms = [];
-                    for (var i = 0, n = mol.getAllAtoms(); i < n; i++) {
-                        if (mol.isSelectedAtom(i)) {
-                            selAtoms.push(i);
-                        }
-                    }
-                } else if (this.mode === CanvasEditorElement.MODE.REACTION) {
-                    // Handle reactions
-                    var reaction = this.getReaction();
-                    if (!reaction) {
-                        return;
-                    }
-                    selAtoms = { reactants: [], products: [] };
-                    var reactants = reaction.getReactants();
-                    var products = reaction.getProducts();
-                    if (reactants) {
-                        for (var r = 0; r < reactants; r++) {
-                            var mol = reaction.getReactant(r);
-                            var sel = [];
-                            for (var i = 0, n = mol.getAllAtoms(); i < n; i++) {
-                                if (mol.isSelectedAtom(i)) {
-                                    sel.push(i);
-                                }
-                            }
-                            selAtoms.reactants.push(sel);
-                        }
-                    }
-                    if (products) {
-                        for (var p = 0; p < products; p++) {
-                            var mol = reaction.getProduct(p);
-                            var sel = [];
-                            for (var i = 0, n = mol.getAllAtoms(); i < n; i++) {
-                                if (mol.isSelectedAtom(i)) {
-                                    sel.push(i);
-                                }
-                            }
-                            selAtoms.products.push(sel);
-                        }
+                var selAtoms = [];
+                var mol = this.getMolecule();
+                if (!mol) {
+                    return;
+                }
+                for (var i = 0, n = mol.getAllAtoms(); i < n; i++) {
+                    if (mol.isSelectedAtom(i)) {
+                        selAtoms.push(i);
                     }
                 }
                 this.dispatchEvent(new CustomEvent('ocl-selectionchange', {
                     detail: {
                         type: e.detail.type,
                         isUserEvent: e.detail.isUserEvent,
-                        mode: this.mode,
-                        selectedAtoms: JSON.stringify(selAtoms)
-                    },
-                    bubbles: true,
-                    composed: true
+                        selectedAtoms: selAtoms
+                    }
                 }));
             }
         });
