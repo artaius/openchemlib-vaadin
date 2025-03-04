@@ -175,4 +175,8 @@ public abstract class OpenChemLibEditor<T> extends AbstractSinglePropertyField<O
     public ContextMenu getContextMenu() {
         return contextMenu;
     }
+
+    public Registration addAtomSelectionListener(ComponentEventListener<AtomSelectionEvent> listener) {
+        return addListener(AtomSelectionEvent.class, listener);
+    }
 }
