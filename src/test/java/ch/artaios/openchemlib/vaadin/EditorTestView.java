@@ -2,9 +2,11 @@ package ch.artaios.openchemlib.vaadin;
 
 import com.actelion.research.chem.StereoMolecule;
 import com.vaadin.flow.component.Unit;
+import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.checkbox.Checkbox;
 import com.vaadin.flow.component.html.H4;
 import com.vaadin.flow.component.html.Hr;
+import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.notification.NotificationVariant;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
@@ -15,6 +17,8 @@ import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouteAlias;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 
@@ -113,7 +117,71 @@ public class EditorTestView extends VerticalLayout {
             reactionEditor.setFragment(event.getValue());
         });
 
-        add(new HorizontalLayout(editable, fragment));
+        add(new HorizontalLayout(
+                editable,
+                fragment
+        ));
+
+        // Structure Editor Features
+        Span structureEditorButtonsLabel = new Span("Structure Editor Features:");
+        Button highlightBackgroundButton = new Button("Highlight Background", event -> {
+            ArrayList<Integer> bondIndices = new ArrayList<>(Arrays.asList(0, 1, 2, 3));
+            structureEditor.highlightBondsBackground(bondIndices);
+        });
+        Button highlightForegroundButton = new Button("Highlight Foreground", event -> {
+            ArrayList<Integer> bondIndices = new ArrayList<>(Arrays.asList(0, 1, 2, 3));
+            structureEditor.highlightBondsForeground(bondIndices);
+        });
+        Button removeHighlightButton = new Button("Remove Highlight", event -> {
+            structureEditor.clearHighlights();
+        });
+        Button colorAtomsButton = new Button("Color Atoms", event -> {
+            structureEditor.setAtomColor(0, 0x0000C0);
+            structureEditor.setAtomColor(1, 0x0000C0);
+            structureEditor.setAtomColor(2, 0x0000C0);
+        });
+        Button removeAtomColorButton = new Button("Remove Atom Color", event -> {
+            structureEditor.removeAtomColors();
+        });
+        add(new HorizontalLayout(
+                structureEditorButtonsLabel,
+                highlightBackgroundButton,
+                highlightForegroundButton,
+                removeHighlightButton,
+                colorAtomsButton,
+                removeAtomColorButton
+        ));
+
+        // Reaction Editor Features
+        Span reactionEditorButtonsLabel = new Span("Reaction Editor Features:");
+        Button highlightBackgroundButton2 = new Button("Highlight Background", event -> {
+            ArrayList<Integer> bondIndices = new ArrayList<>(Arrays.asList(0, 1, 2, 3));
+            reactionEditor.highlightBondsBackground(bondIndices, 0, null);
+        });
+        Button highlightForegroundButton2 = new Button("Highlight Foreground", event -> {
+            ArrayList<Integer> bondIndices = new ArrayList<>(Arrays.asList(0, 1, 2, 3));
+            reactionEditor.highlightBondsForeground(bondIndices, 1, null);
+        });
+        Button removeHighlightButton2 = new Button("Remove Highlights", event -> {
+            reactionEditor.clearHighlights(0, null);
+            reactionEditor.clearHighlights(1, null);
+        });
+        Button colorAtomsButton2 = new Button("Color Atoms", event -> {
+            reactionEditor.setAtomColor(0, 0x0000C0, null, 0);
+            reactionEditor.setAtomColor(1, 0x0000C0, null, 0);
+            reactionEditor.setAtomColor(2, 0x0000C0, null, 0);
+        });
+        Button removeAtomColorButton2 = new Button("Remove Atom Color", event -> {
+            reactionEditor.removeAtomColors(null, 0);
+        });
+        add(new HorizontalLayout(
+                reactionEditorButtonsLabel,
+                highlightBackgroundButton2,
+                highlightForegroundButton2,
+                removeHighlightButton2,
+                colorAtomsButton2,
+                removeAtomColorButton2
+        ));
 
         // ---
 
