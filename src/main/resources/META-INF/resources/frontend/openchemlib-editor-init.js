@@ -92,6 +92,78 @@ try {
                 }));
             }
         });
+
+        this.getCorrectMolecule = function(reactantMolId=null, productMolId=null) {
+            if (this.mode === CanvasEditorElement.MODE.MOLECULE) {
+                return this.getMolecule();
+            } else {
+                if (reactantMolId !== null) {
+                    return this.getReaction().getReactant(reactantMolId);
+                } else if (productMolId !== null) {
+                    return this.getReaction().getProduct(productMolId);
+                } else {
+                    return null;
+                }
+            }
+        }
+
+        this.setAtomColor = function(atom, color, reactantMolId=null, productMolId=null) {
+            const allowedColors = {
+                0x000000: "None",
+                0x000040: "Blue",
+                0x000080: "Red",
+                0x0000C0: "Green",
+                0x000100: "Magenta",
+                0x000140: "Orange",
+                0x000180: "DarkGreen",
+                0x0001C0: "DarkRed"
+            };
+            if (allowedColors[color] === undefined) {
+                console.error("Color must be one of", allowedColors, ". Received", color, ".");
+            } else {
+                const molecule = this.getCorrectMolecule(reactantMolId, productMolId);
+                if (molecule !== undefined && molecule !== null && atom < molecule.getAtoms()) {
+                    molecule.setAtomColor(atom, color);
+                    this.moleculeChanged();
+                }
+            }
+        }
+
+        this.removeAtomColors = function(reactantMolId=null, productMolId=null) {
+            const molecule = this.getCorrectMolecule(reactantMolId, productMolId);
+            if (molecule !== undefined && molecule !== null) {
+                molecule.removeAtomColors();
+                this.moleculeChanged();
+            }
+        }
+
+        this.highlightBondsBackground = function(bondIndices, reactantMolId=null, productMolId=null) {
+            const mol = this.getCorrectMolecule(reactantMolId, productMolId);
+            if (mol !== undefined && mol !== null) {
+                for (let i = 0; i < bondIndices.length; i++) {
+                    mol.setBondBackgroundHiliting(bondIndices[i], true);
+                }
+                this.moleculeChanged();
+            }
+        };
+
+        this.highlightBondsForeground = function(bondIndices, reactantMolId=null, productMolId=null) {
+            const mol = this.getCorrectMolecule(reactantMolId, productMolId);
+            if (mol !== undefined && mol !== null) {
+                for (let i = 0; i < bondIndices.length; i++) {
+                    mol.setBondForegroundHiliting(bondIndices[i], true);
+                }
+                this.moleculeChanged();
+            }
+        };
+
+        this.clearHighlights = function(reactantMolId=null, productMolId=null) {
+            const mol = this.getCorrectMolecule(reactantMolId, productMolId);
+            if (mol !== undefined && mol !== null) {
+                mol.removeBondHiliting();
+                this.moleculeChanged();
+            }
+        }
     }
 
     CanvasEditorElement.prototype.copy=function() {

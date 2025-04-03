@@ -8,9 +8,13 @@ import com.vaadin.flow.component.dependency.JsModule;
 import com.vaadin.flow.component.dependency.NpmPackage;
 import com.vaadin.flow.function.SerializableBiFunction;
 import com.vaadin.flow.shared.Registration;
+import elemental.json.Json;
+import elemental.json.JsonArray;
+
+import java.util.ArrayList;
 
 @Tag("openchemlib-editor")
-@NpmPackage(value = "openchemlib", version = "8.17.0")
+@NpmPackage(value = "openchemlib", version = "8.19.0")
 @JsModule("openchemlib/full.pretty.js")
 @JsModule("./openchemlib-editor-init.js")
 @CssImport("./openchemlib-editor.css")
@@ -178,5 +182,33 @@ public abstract class OpenChemLibEditor<T> extends AbstractSinglePropertyField<O
 
     public Registration addAtomSelectionListener(ComponentEventListener<AtomSelectionEvent> listener) {
         return addListener(AtomSelectionEvent.class, listener);
+    }
+
+    public void highlightBondsBackground(ArrayList<Integer> bondIndices, Integer reactantMolId, Integer productMolId) {
+        JsonArray jsonIndices = Json.createArray();
+        for (int i = 0; i < bondIndices.size(); i++) {
+            jsonIndices.set(i, bondIndices.get(i));
+        }
+        getElement().callJsFunction("highlightBondsBackground", jsonIndices, reactantMolId, productMolId);
+    }
+
+    public void highlightBondsForeground(ArrayList<Integer> bondIndices, Integer reactantMolId, Integer productMolId) {
+        JsonArray jsonIndices = Json.createArray();
+        for (int i = 0; i < bondIndices.size(); i++) {
+            jsonIndices.set(i, bondIndices.get(i));
+        }
+        getElement().callJsFunction("highlightBondsForeground", jsonIndices, reactantMolId, productMolId);
+    }
+
+    public void clearHighlights(Integer reactantMolId, Integer productMolId) {
+        getElement().callJsFunction("clearHighlights", reactantMolId, productMolId);
+    }
+
+    public void setAtomColor(int atom, int color, Integer reactantMolId, Integer productMolId) {
+        getElement().callJsFunction("setAtomColor", atom, color, reactantMolId, productMolId);
+    }
+
+    public void removeAtomColors(Integer reactantMolId, Integer productMolId) {
+        getElement().callJsFunction("removeAtomColors", reactantMolId, productMolId);
     }
 }

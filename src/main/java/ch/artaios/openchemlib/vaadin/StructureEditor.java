@@ -2,6 +2,8 @@ package ch.artaios.openchemlib.vaadin;
 
 import com.actelion.research.chem.StereoMolecule;
 
+import java.util.ArrayList;
+
 /**
  * Project: openchemlib-vaadin
  * Date:    22.10.24
@@ -34,5 +36,25 @@ public class StructureEditor extends OpenChemLibEditor<StereoMolecule> {
      */
     public StructureEditor(boolean fragment) {
         super(Mode.MOLECULE, fragment, false, true, new StereoMolecule(), ChemUtils.PRESENTATION_TO_MODEL_STRUCTURE, ChemUtils.MODEL_TO_PRESENTATION_STRUCTURE);
+    }
+
+    public void highlightBondsBackground(ArrayList<Integer> bondIndices) {
+        highlightBondsBackground(bondIndices, null, null);
+    }
+
+    public void highlightBondsForeground(ArrayList<Integer> bondIndices) {
+        highlightBondsForeground(bondIndices, null, null);
+    }
+
+    public void clearHighlights() {
+        clearHighlights(null, null);
+    }
+
+    public void setAtomColor(int atom, int color) {
+        setAtomColor(atom, color, null, null);
+    }
+
+    public void removeAtomColors() {
+        removeAtomColors(null, null);
     }
 }
