@@ -168,6 +168,7 @@ try {
                 mol.removeBondHiliting();
                 this.moleculeChanged();
             }
+        }
         };
 
         this.setAtomCustomLabel = function(atom, label) {
