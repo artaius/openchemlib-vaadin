@@ -93,6 +93,11 @@ try {
             }
         });
 
+        this.isEmptyMolecule = function() {
+            const mol = this.getMolecule();
+            return mol === null || mol.getIDCode() === "d@";
+        }
+
         this.getCorrectMolecule = function(reactantMolId=null, productMolId=null) {
             if (this.mode === CanvasEditorElement.MODE.MOLECULE) {
                 return this.getMolecule();
@@ -122,7 +127,7 @@ try {
                 console.error("Color must be one of", allowedColors, ". Received", color, ".");
             } else {
                 const molecule = this.getCorrectMolecule(reactantMolId, productMolId);
-                if (molecule !== undefined && molecule !== null && atom < molecule.getAtoms()) {
+                if (molecule !== undefined && molecule !== null && !this.isEmptyMolecule() && atom < molecule.getAtoms()) {
                     molecule.setAtomColor(atom, color);
                     this.moleculeChanged();
                 }
@@ -131,7 +136,7 @@ try {
 
         this.removeAtomColors = function(reactantMolId=null, productMolId=null) {
             const molecule = this.getCorrectMolecule(reactantMolId, productMolId);
-            if (molecule !== undefined && molecule !== null) {
+            if (molecule !== undefined && molecule !== null && !this.isEmptyMolecule()) {
                 molecule.removeAtomColors();
                 this.moleculeChanged();
             }
@@ -139,7 +144,7 @@ try {
 
         this.highlightBondsBackground = function(bondIndices, reactantMolId=null, productMolId=null) {
             const mol = this.getCorrectMolecule(reactantMolId, productMolId);
-            if (mol !== undefined && mol !== null) {
+            if (mol !== undefined && mol !== null && !this.isEmptyMolecule()) {
                 for (let i = 0; i < bondIndices.length; i++) {
                     mol.setBondBackgroundHiliting(bondIndices[i], true);
                 }
@@ -149,7 +154,7 @@ try {
 
         this.highlightBondsForeground = function(bondIndices, reactantMolId=null, productMolId=null) {
             const mol = this.getCorrectMolecule(reactantMolId, productMolId);
-            if (mol !== undefined && mol !== null) {
+            if (mol !== undefined && mol !== null && !this.isEmptyMolecule()) {
                 for (let i = 0; i < bondIndices.length; i++) {
                     mol.setBondForegroundHiliting(bondIndices[i], true);
                 }
@@ -159,7 +164,7 @@ try {
 
         this.clearHighlights = function(reactantMolId=null, productMolId=null) {
             const mol = this.getCorrectMolecule(reactantMolId, productMolId);
-            if (mol !== undefined && mol !== null) {
+            if (mol !== undefined && mol !== null && !this.isEmptyMolecule()) {
                 mol.removeBondHiliting();
                 this.moleculeChanged();
             }
@@ -168,8 +173,7 @@ try {
         this.setAtomCustomLabel = function(atom, label) {
             if (atom !== null) {
                 const mol = this.getMolecule();
-                if (mol !== undefined && mol !== null) {
-                    console.log("Molecule:", mol);
+                if (mol !== undefined && mol !== null && !this.isEmptyMolecule()) {
                     mol.setAtomCustomLabel(atom, label);
                     this.moleculeChanged();
                 }
