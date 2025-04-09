@@ -163,7 +163,18 @@ try {
                 mol.removeBondHiliting();
                 this.moleculeChanged();
             }
-        }
+        };
+
+        this.setAtomCustomLabel = function(atom, label) {
+            if (atom !== null) {
+                const mol = this.getMolecule();
+                if (mol !== undefined && mol !== null) {
+                    console.log("Molecule:", mol);
+                    mol.setAtomCustomLabel(atom, label);
+                    this.moleculeChanged();
+                }
+            }
+        };
     }
 
     CanvasEditorElement.prototype.copy=function() {

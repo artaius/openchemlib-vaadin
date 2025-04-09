@@ -143,13 +143,21 @@ public class EditorTestView extends VerticalLayout {
         Button removeAtomColorButton = new Button("Remove Atom Color", event -> {
             structureEditor.removeAtomColors();
         });
+        Button labelAtomButton = new Button("Label first atom", event -> {
+            structureEditor.setAtomCustomLabel(0, "]Label");
+        });
+        Button removeAtomLabelButton = new Button("Remove label", event -> {
+            structureEditor.setAtomCustomLabel(0, null);
+        });
         add(new HorizontalLayout(
                 structureEditorButtonsLabel,
                 highlightBackgroundButton,
                 highlightForegroundButton,
                 removeHighlightButton,
                 colorAtomsButton,
-                removeAtomColorButton
+                removeAtomColorButton,
+                labelAtomButton,
+                removeAtomLabelButton
         ));
 
         // Reaction Editor Features

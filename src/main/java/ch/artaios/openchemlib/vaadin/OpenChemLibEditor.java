@@ -211,4 +211,8 @@ public abstract class OpenChemLibEditor<T> extends AbstractSinglePropertyField<O
     public void removeAtomColors(Integer reactantMolId, Integer productMolId) {
         getElement().callJsFunction("removeAtomColors", reactantMolId, productMolId);
     }
+
+    public void setAtomCustomLabel(int atom, String label) {
+        getElement().callJsFunction("setAtomCustomLabel", atom, label);
+    }
 }
