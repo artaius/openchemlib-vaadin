@@ -96,8 +96,10 @@ public abstract class OpenChemLibEditor<T> extends AbstractSinglePropertyField<O
     protected void onAttach(AttachEvent attachEvent) {
         super.onAttach(attachEvent);
         initialized = true;
-        if (initialValue != null)
+        if (initialValue != null) {
             getElement().setAttribute(ATTRIBUTE_IDCODE, modelToPresentation.apply(null, initialValue));
+            setCustomAtomProperties(initialValue);
+        }
     }
 
     /* Due to a bug in OCL-JS where "CanvasEditorElement.#state"
@@ -121,9 +123,13 @@ public abstract class OpenChemLibEditor<T> extends AbstractSinglePropertyField<O
         if(initialized) {
             String idcode = modelToPresentation.apply(null, value);
             getElement().setProperty(ATTRIBUTE_IDCODE, idcode);
+            setCustomAtomProperties(value);
         } else {
             initialValue = value;
         }
+    }
+
+    protected void setCustomAtomProperties(T value) {
     }
 
     public boolean getReadonly() {
@@ -210,5 +216,9 @@ public abstract class OpenChemLibEditor<T> extends AbstractSinglePropertyField<O
 
     public void removeAtomColors(Integer reactantMolId, Integer productMolId) {
         getElement().callJsFunction("removeAtomColors", reactantMolId, productMolId);
+    }
+
+    public void setAtomCustomLabel(int atom, String label) {
+        getElement().callJsFunction("setAtomCustomLabel", atom, label);
     }
 }

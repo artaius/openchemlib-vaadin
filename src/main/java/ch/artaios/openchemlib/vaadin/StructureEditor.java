@@ -38,6 +38,35 @@ public class StructureEditor extends OpenChemLibEditor<StereoMolecule> {
         super(Mode.MOLECULE, fragment, false, true, new StereoMolecule(), ChemUtils.PRESENTATION_TO_MODEL_STRUCTURE, ChemUtils.MODEL_TO_PRESENTATION_STRUCTURE);
     }
 
+    @Override
+    protected void setCustomAtomProperties(StereoMolecule mol) {
+        if (mol != null && !mol.getIDCode().equals("d@")) {
+            for (int atom = 0; atom < mol.getAtoms(); atom++) {
+                // Set custom atom labels
+                if (mol.getAtomCustomLabel(atom) != null) {
+                    setAtomCustomLabel(atom, mol.getAtomCustomLabel(atom));
+                }
+
+                // Set atom coloring
+                setAtomColor(atom, mol.getAtomColor(atom), null, null);
+            }
+
+            // Set bond highlighting
+            ArrayList<Integer> highlightedBondsForeground = new ArrayList<>();
+            ArrayList<Integer> highlightedBondsBackground = new ArrayList<>();
+            for (int bond = 0; bond < mol.getBonds(); bond++) {
+                if (mol.isBondForegroundHilited(bond)) {
+                    highlightedBondsForeground.add(bond);
+                }
+                if (mol.isBondBackgroundHilited(bond)) {
+                    highlightedBondsBackground.add(bond);
+                }
+            }
+            highlightBondsForeground(highlightedBondsForeground, null, null);
+            highlightBondsBackground(highlightedBondsBackground, null, null);
+        }
+    }
+
     public void highlightBondsBackground(ArrayList<Integer> bondIndices) {
         highlightBondsBackground(bondIndices, null, null);
     }
