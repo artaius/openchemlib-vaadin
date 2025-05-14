@@ -10,7 +10,7 @@
 
     <groupId>ch.artaios</groupId>
     <artifactId>openchemlib-vaadin</artifactId>
-    <version>2.3.1-SNAPSHOT</version>
+    <version>2.3.1</version>
 
     <packaging>jar</packaging>
 
