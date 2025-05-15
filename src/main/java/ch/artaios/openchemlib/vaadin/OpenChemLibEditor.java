@@ -14,8 +14,8 @@ import elemental.json.JsonArray;
 import java.util.ArrayList;
 
 @Tag("openchemlib-editor")
-@NpmPackage(value = "openchemlib", version = "8.19.0")
-@JsModule("openchemlib/full.pretty.js")
+@NpmPackage(value = "openchemlib", version = "9.2.0")
+@JsModule("openchemlib")
 @JsModule("./openchemlib-editor-init.js")
 @CssImport("./openchemlib-editor.css")
 
@@ -210,15 +210,15 @@ public abstract class OpenChemLibEditor<T> extends AbstractSinglePropertyField<O
         getElement().callJsFunction("clearHighlights", reactantMolId, productMolId);
     }
 
-    public void setAtomColor(int atom, int color, Integer reactantMolId, Integer productMolId) {
-        getElement().callJsFunction("setAtomColor", atom, color, reactantMolId, productMolId);
+    public void setAtomColor(int atom, int color, Integer reactantMolId, Integer productMolId, boolean canonicalOrdering) {
+        getElement().callJsFunction("setAtomColor", atom, color, reactantMolId, productMolId, canonicalOrdering);
     }
 
     public void removeAtomColors(Integer reactantMolId, Integer productMolId) {
         getElement().callJsFunction("removeAtomColors", reactantMolId, productMolId);
     }
 
-    public void setAtomCustomLabel(int atom, String label) {
-        getElement().callJsFunction("setAtomCustomLabel", atom, label);
+    public void setAtomCustomLabel(int atom, String label, boolean canonicalOrdering) {
+        getElement().callJsFunction("setAtomCustomLabel", atom, label, canonicalOrdering);
     }
 }

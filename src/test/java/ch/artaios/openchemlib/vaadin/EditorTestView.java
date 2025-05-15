@@ -136,18 +136,18 @@ public class EditorTestView extends VerticalLayout {
             structureEditor.clearHighlights();
         });
         Button colorAtomsButton = new Button("Color Atoms", event -> {
-            structureEditor.setAtomColor(0, 0x0000C0);
-            structureEditor.setAtomColor(1, 0x0000C0);
-            structureEditor.setAtomColor(2, 0x0000C0);
+            structureEditor.setAtomColor(0, 0x0000C0, false);
+            structureEditor.setAtomColor(1, 0x0000C0, false);
+            structureEditor.setAtomColor(2, 0x0000C0, true);
         });
         Button removeAtomColorButton = new Button("Remove Atom Color", event -> {
             structureEditor.removeAtomColors();
         });
         Button labelAtomButton = new Button("Label first atom", event -> {
-            structureEditor.setAtomCustomLabel(0, "]Label");
+            structureEditor.setAtomCustomLabel(0, "]Label", false);
         });
         Button removeAtomLabelButton = new Button("Remove label", event -> {
-            structureEditor.setAtomCustomLabel(0, null);
+            structureEditor.setAtomCustomLabel(0, null, false);
         });
         add(new HorizontalLayout(
                 structureEditorButtonsLabel,
@@ -175,9 +175,9 @@ public class EditorTestView extends VerticalLayout {
             reactionEditor.clearHighlights(1, null);
         });
         Button colorAtomsButton2 = new Button("Color Atoms", event -> {
-            reactionEditor.setAtomColor(0, 0x0000C0, null, 0);
-            reactionEditor.setAtomColor(1, 0x0000C0, null, 0);
-            reactionEditor.setAtomColor(2, 0x0000C0, null, 0);
+            reactionEditor.setAtomColor(0, 0x0000C0, null, 0, false);
+            reactionEditor.setAtomColor(1, 0x0000C0, null, 0, false);
+            reactionEditor.setAtomColor(2, 0x0000C0, null, 0, false);
         });
         Button removeAtomColorButton2 = new Button("Remove Atom Color", event -> {
             reactionEditor.removeAtomColors(null, 0);

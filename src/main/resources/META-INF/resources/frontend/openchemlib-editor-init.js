@@ -1,4 +1,4 @@
-import OCL from 'openchemlib/full.pretty.js';
+import OCL from 'openchemlib';
 
 try {
     console.info("Registering OCL custom tag for Vaadin...");
@@ -31,6 +31,35 @@ try {
             }
         }
 
+        this.canonicalizeAtomIndices = function(mol, indices) {
+            if (mol !== null && mol !== undefined) {
+                console.log(OCL);
+                const canonizer = new OCL.Canonizer(mol);
+                const mapping = canonizer.getGraphIndexes();
+                var mappedIndices = [];
+                for (var i = 0; i < indices.length; i++) {
+                    mappedIndices.push(mapping[indices[i]]);
+                }
+                return mappedIndices;
+            } else {
+                return indices;
+            }
+        }
+
+        this.uncanonicalizeAtomIndices = function(mol, indices) {
+            if (mol !== null && mol !== undefined) {
+                const canonizer = new OCL.Canonizer(mol);
+                const mapping = canonizer.getGraphIndexes();
+                var mappedIndices = [];
+                for (var i = 0; i < indices.length; i++) {
+                    mappedIndices.push(mapping.indexOf(indices[i]));
+                }
+                return mappedIndices;
+            } else {
+                return indices;
+            }
+        }
+
         this.addEventListener('change', function(e) {
             if (e.detail.type === 'selection') {
                 var selAtoms;
@@ -46,6 +75,7 @@ try {
                             selAtoms.push(i);
                         }
                     }
+                    selAtoms = this.canonicalizeAtomIndices(mol, selAtoms);
                 } else if (this.mode === CanvasEditorElement.MODE.REACTION) {
                     // Handle reactions
                     var reaction = this.getReaction();
@@ -64,6 +94,7 @@ try {
                                     sel.push(i);
                                 }
                             }
+                            sel = this.canonicalizeAtomIndices(mol, sel);
                             selAtoms.reactants.push(sel);
                         }
                     }
@@ -76,6 +107,7 @@ try {
                                     sel.push(i);
                                 }
                             }
+                            sel = this.canonicalizeAtomIndices(mol, sel);
                             selAtoms.products.push(sel);
                         }
                     }
@@ -112,7 +144,7 @@ try {
             }
         }
 
-        this.setAtomColor = function(atom, color, reactantMolId=null, productMolId=null) {
+        this.setAtomColor = function(atom, color, reactantMolId=null, productMolId=null, canonicalOrdering=true) {
             const allowedColors = {
                 0x000000: "None",
                 0x000040: "Blue",
@@ -127,6 +159,9 @@ try {
                 console.error("Color must be one of", allowedColors, ". Received", color, ".");
             } else {
                 const molecule = this.getCorrectMolecule(reactantMolId, productMolId);
+                if (canonicalOrdering) {
+                    atom = this.uncanonicalizeAtomIndices(molecule, [atom])[0];
+                }
                 if (molecule !== undefined && molecule !== null && !this.isEmptyMolecule() && atom < molecule.getAtoms()) {
                     molecule.setAtomColor(atom, color);
                     this.moleculeChanged();
@@ -170,9 +205,12 @@ try {
             }
         };
 
-        this.setAtomCustomLabel = function(atom, label) {
+        this.setAtomCustomLabel = function(atom, label, canonicalOrdering=true) {
             if (atom !== null) {
                 const mol = this.getMolecule();
+                if (canonicalOrdering) {
+                    atom = this.uncanonicalizeAtomIndices(mol, [atom])[0];
+                }
                 if (mol !== undefined && mol !== null && !this.isEmptyMolecule()) {
                     mol.setAtomCustomLabel(atom, label);
                     this.moleculeChanged();

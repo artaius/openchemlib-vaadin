@@ -44,11 +44,11 @@ public class StructureEditor extends OpenChemLibEditor<StereoMolecule> {
             for (int atom = 0; atom < mol.getAtoms(); atom++) {
                 // Set custom atom labels
                 if (mol.getAtomCustomLabel(atom) != null) {
-                    setAtomCustomLabel(atom, mol.getAtomCustomLabel(atom));
+                    setAtomCustomLabel(atom, mol.getAtomCustomLabel(atom), true);
                 }
 
                 // Set atom coloring
-                setAtomColor(atom, mol.getAtomColor(atom), null, null);
+                setAtomColor(atom, mol.getAtomColor(atom), null, null, true);
             }
 
             // Set bond highlighting
@@ -79,8 +79,8 @@ public class StructureEditor extends OpenChemLibEditor<StereoMolecule> {
         clearHighlights(null, null);
     }
 
-    public void setAtomColor(int atom, int color) {
-        setAtomColor(atom, color, null, null);
+    public void setAtomColor(int atom, int color, boolean canonicalOrdering) {
+        setAtomColor(atom, color, null, null, canonicalOrdering);
     }
 
     public void removeAtomColors() {
