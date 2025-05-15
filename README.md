@@ -1,6 +1,6 @@
 # OpenChemLib Vaadin 
 [![](https://github.com/artaius/openchemlib-vaadin/actions/workflows/maven.yml/badge.svg?branch=release)](https://github.com/artaius/openchemlib-vaadin/actions)
-[![](https://img.shields.io/nexus/r/ch.artaios/openchemlib-vaadin?server=https%3A%2F%2Fs01.oss.sonatype.org)](https://central.sonatype.com/artifact/ch.artaios/openchemlib-vaadin)
+[![](https://img.shields.io/maven-central/v/ch.artaios/openchemlib-vaadin)](https://central.sonatype.com/artifact/ch.artaios/openchemlib-vaadin)
 
 Vaadin Java integration of the [OpenChemLib JS](https://github.com/cheminfo/openchemlib-js) components ([OpenChemLib JS](https://github.com/cheminfo/openchemlib-js) is the JavaScript port of the [OpenChemLib](https://github.com/Actelion/openchemlib) Java library).
 
