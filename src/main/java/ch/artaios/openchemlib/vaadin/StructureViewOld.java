@@ -9,8 +9,8 @@ import com.vaadin.flow.shared.Registration;
 
 @Deprecated(since = "Use StructureEditor instead!")
 @Tag("structure-view-old")
-@NpmPackage(value = "openchemlib", version = "8.16.0")
-@JsModule(value = "openchemlib/full.pretty.js")
+@NpmPackage(value = "openchemlib", version = "9.2.0")
+@JsModule(value = "openchemlib")
 @JsModule(value = "./structure-view-old.ts")
 @CssImport(value = "./structure-view-old.css")
 /*

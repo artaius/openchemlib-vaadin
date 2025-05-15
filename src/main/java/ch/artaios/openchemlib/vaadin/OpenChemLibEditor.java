@@ -14,8 +14,8 @@ import elemental.json.JsonArray;
 import java.util.ArrayList;
 
 @Tag("openchemlib-editor")
-@NpmPackage(value = "openchemlib", version = "8.19.0")
-@JsModule("openchemlib/full.pretty.js")
+@NpmPackage(value = "openchemlib", version = "9.2.0")
+@JsModule("openchemlib")
 @JsModule("./openchemlib-editor-init.js")
 @CssImport("./openchemlib-editor.css")
 

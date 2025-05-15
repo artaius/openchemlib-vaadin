@@ -1,4 +1,4 @@
-import OCL from 'openchemlib/full.pretty.js';
+import OCL from 'openchemlib';
 
 try {
     console.info("Registering OCL custom tag for Vaadin...");
