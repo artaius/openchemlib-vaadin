@@ -270,8 +270,9 @@ try {
                 }
             }
         }
+        var canonizer = OCL.Canonizer(molecule, OCL.CanonizerOptions.ENCODE_ATOM_CUSTOM_LABELS_WITHOUT_RANKING | CanonizerOptions.ENCODE_ATOM_SELECTION);
         if (molecule!== undefined)
-            return molecule.getIDCode() + " " + molecule.getIDCoordinates();
+            return canonizer.getIDCode() + " " + canonizer.getEncodedCoordinates();
         else
             return (new OCL.Molecule()).getIDCode();
     }

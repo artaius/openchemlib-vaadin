@@ -1,9 +1,6 @@
 package ch.artaios.openchemlib.vaadin;
 
-import com.actelion.research.chem.IDCodeParser;
-import com.actelion.research.chem.IsomericSmilesCreator;
-import com.actelion.research.chem.SmilesParser;
-import com.actelion.research.chem.StereoMolecule;
+import com.actelion.research.chem.*;
 import com.actelion.research.chem.reaction.Reaction;
 import com.actelion.research.chem.reaction.ReactionEncoder;
 import com.vaadin.flow.function.SerializableBiFunction;
@@ -79,10 +76,13 @@ public class ChemUtils {
     public static String getIdcode(StereoMolecule stereoMolecule) {
         if(stereoMolecule==null)
             return null;
+
+        final Canonizer canonizer = new Canonizer(stereoMolecule, Canonizer.ENCODE_ATOM_CUSTOM_LABELS_WITHOUT_RANKING | Canonizer.ENCODE_ATOM_SELECTION);
+
         if(stereoMolecule.getIDCoordinates()!=null && !stereoMolecule.getIDCoordinates().isBlank())
-            return String.format("%s %s", stereoMolecule.getIDCode(), stereoMolecule.getIDCoordinates());
+            return String.format("%s %s", canonizer.getIDCode(), canonizer.getEncodedCoordinates());
         else
-            return stereoMolecule.getIDCode();
+            return canonizer.getIDCode();
     }
 
     /**
