@@ -223,6 +223,33 @@ try {
         navigator.clipboard.writeText(this.idcode); //.then(r => console.info('idcode copied'));
     }
 
+    CanvasEditorElement.prototype.copySmiles=function() {
+        if (this.mode === CanvasEditorElement.MODE.MOLECULE)
+            navigator.clipboard.writeText(this.getMolecule().toSmiles());
+        else
+            navigator.clipboard.writeText(this.getReaction().toSmiles());
+    }
+
+    CanvasEditorElement.prototype.copyMolfile=function() {
+        if (this.mode === CanvasEditorElement.MODE.MOLECULE)
+            navigator.clipboard.writeText(this.getMolecule().toMolfile());
+    }
+
+    CanvasEditorElement.prototype.copyMolfileV3=function() {
+        if (this.mode === CanvasEditorElement.MODE.MOLECULE)
+            navigator.clipboard.writeText(this.getMolecule().toMolfileV3());
+    }
+
+    CanvasEditorElement.prototype.copyRxn=function() {
+        if (this.mode === CanvasEditorElement.MODE.REACTION)
+            navigator.clipboard.writeText(this.getReaction().toRxn());
+    }
+
+    CanvasEditorElement.prototype.copyRxnV3=function() {
+        if (this.mode === CanvasEditorElement.MODE.REACTION)
+            navigator.clipboard.writeText(this.getReaction().toRxnV3());
+    }
+
     CanvasEditorElement.prototype.paste=function() {
         // TODO handle other content types?
         // for debugging: list available clipboard content

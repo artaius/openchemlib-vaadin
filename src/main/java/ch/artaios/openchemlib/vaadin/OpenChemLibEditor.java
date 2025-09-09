@@ -80,10 +80,34 @@ public abstract class OpenChemLibEditor<T> extends AbstractSinglePropertyField<O
 
         // create context menu
         contextMenu = new ContextMenu(this);
-        contextMenu.addItem("Copy", event -> {
-            System.out.println("Copy...");
+        contextMenu.addItem("Copy ID-Code", event -> {
+            System.out.println("Copy IdCode...");
             getElement().callJsFunction("copy");
         });
+        contextMenu.addItem("Copy Smiles", event -> {
+            System.out.println("Copy Smiles...");
+            getElement().callJsFunction("copySmiles");
+        });
+        if(mode==Mode.MOLECULE) {
+            contextMenu.addItem("Copy Molfile V2", event -> {
+                System.out.println("Copy Molfile...");
+                getElement().callJsFunction("copyMolfile");
+            });
+            contextMenu.addItem("Copy Molfile V3", event -> {
+                System.out.println("Copy MolfileV3...");
+                getElement().callJsFunction("copyMolfileV3");
+            });
+        }
+        if(mode==Mode.REACTION) {
+            contextMenu.addItem("Copy Rxn V2", event -> {
+                System.out.println("Copy Rxn...");
+                getElement().callJsFunction("copyRxn");
+            });
+            contextMenu.addItem("Copy Rxn V3", event -> {
+                System.out.println("Copy RxnV3...");
+                getElement().callJsFunction("copyRxnV3");
+            });
+        }
         final MenuItem paste = contextMenu.addItem("Paste", event -> {
             System.out.println("Paste...");
             getElement().callJsFunction("paste");
