@@ -42,15 +42,8 @@ jobs:
             --activate-profiles production \
             -DskipTests=true \
             package
-      - id: extract_version
-        name: Extract Version
-        if: ${{ github.ref_name == 'release' }}
-        run: |
-          echo "VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)" >> $GITHUB_ENV
-          mvn help:evaluate -Dexpression=project.version -q -DforceStdout
       - id: publish_artifacts
         name: Publish Artifacts
-        if: ${{ github.ref_name == 'release' && !contains(env.VERSION,'SNAPSHOT') }}
         env:
           MAVEN_USERNAME: ${{ secrets.CENTRAL_USERNAME }}
           MAVEN_PASSWORD: ${{ secrets.CENTRAL_TOKEN }}
@@ -62,6 +55,11 @@ jobs:
             --activate-profiles production \
             -DskipTests=true \
             deploy
+      - id: extract_version
+        name: Extract Version
+        if: ${{ github.ref_name == 'release' }}
+        run: |
+          echo "VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)" >> $GITHUB_ENV
       - id: create_tag
         name: Create Tag
         if: ${{ github.ref_name == 'release' && !contains(env.VERSION,'SNAPSHOT') }}
