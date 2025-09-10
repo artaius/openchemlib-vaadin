@@ -36,6 +36,14 @@ To build production version run:
 mvn install -Pproduction
 ```
 
+### Releasing
+To release a new version, update the version in `pom.xml` either to
+
+- x.y.z-SNAPSHOT in ```main``` branch
+- x.y.z in ```release``` branch 
+
+and push the changes. The release will be automatically published to Maven Central.
+
 ## Screenshots
 ![StructureView](resources/structure_editor.png "StructureEditor")
 ![StructureView](resources/structure_editor_dialog.png "StructureEditorDialog")

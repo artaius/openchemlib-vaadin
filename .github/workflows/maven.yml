@@ -44,6 +44,7 @@ jobs:
             package
       - id: publish_artifacts
         name: Publish Artifacts
+        if: ${{ github.ref_name == 'release' && !contains(env.VERSION,'SNAPSHOT') || github.ref_name == 'main' && contains(env.VERSION,'SNAPSHOT') }}
         env:
           MAVEN_USERNAME: ${{ secrets.CENTRAL_USERNAME }}
           MAVEN_PASSWORD: ${{ secrets.CENTRAL_TOKEN }}
