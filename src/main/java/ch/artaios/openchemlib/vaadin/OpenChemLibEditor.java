@@ -55,6 +55,7 @@ import java.util.ArrayList;
 public abstract class OpenChemLibEditor<T> extends AbstractSinglePropertyField<OpenChemLibEditor<T>, T> implements HasSize {
     private boolean initialized;
     private T initialValue;
+    private MenuItem pasteMenuItem;
 
     public enum Mode {
         MOLECULE,
@@ -138,11 +139,11 @@ public abstract class OpenChemLibEditor<T> extends AbstractSinglePropertyField<O
                 getElement().callJsFunction("copyRxnV3");
             });
         }
-        final MenuItem paste = contextMenu.addItem("Paste", event -> {
+        pasteMenuItem = contextMenu.addItem("Paste", event -> {
             System.out.println("Paste...");
             getElement().callJsFunction("paste");
         });
-        paste.setEnabled(editable);
+        pasteMenuItem.setEnabled(editable);
 
     }
 
@@ -151,8 +152,20 @@ public abstract class OpenChemLibEditor<T> extends AbstractSinglePropertyField<O
         super.onAttach(attachEvent);
         initialized = true;
         if (initialValue != null) {
-            getElement().setAttribute(ATTRIBUTE_IDCODE, modelToPresentation.apply(null, initialValue));
-            setCustomAtomProperties(initialValue);
+            T value = initialValue;
+            initialValue = null;
+            setValue(value);
+            return;
+        }
+        T value = super.getValue();
+        if (value != null) {
+            String idcode = modelToPresentation.apply(null, value);
+            if (idcode != null) {
+                getElement().setAttribute(ATTRIBUTE_IDCODE, idcode);
+            } else {
+                getElement().removeAttribute(ATTRIBUTE_IDCODE);
+            }
+            setCustomAtomProperties(value);
         }
     }
 
@@ -175,9 +188,16 @@ public abstract class OpenChemLibEditor<T> extends AbstractSinglePropertyField<O
     public void setValue(T value) {
         // Handle lazy initialization
         if(initialized) {
+            super.setValue(value);
             String idcode = modelToPresentation.apply(null, value);
-            getElement().setProperty(ATTRIBUTE_IDCODE, idcode);
-            setCustomAtomProperties(value);
+            if (idcode != null) {
+                getElement().setAttribute(ATTRIBUTE_IDCODE, idcode);
+            } else {
+                getElement().removeAttribute(ATTRIBUTE_IDCODE);
+            }
+            if (value != null) {
+                setCustomAtomProperties(value);
+            }
         } else {
             initialValue = value;
         }
@@ -204,8 +224,8 @@ public abstract class OpenChemLibEditor<T> extends AbstractSinglePropertyField<O
         editableProperty.set(this, editable);
 
         // enable paste context menu only if editable
-        if(contextMenu!=null)
-            contextMenu.getItems().get(1).setEnabled(editable);
+        if(pasteMenuItem!=null)
+            pasteMenuItem.setEnabled(editable);
     }
 
     public Mode getMode() {

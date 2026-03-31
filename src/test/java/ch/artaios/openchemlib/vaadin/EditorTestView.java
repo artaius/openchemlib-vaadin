@@ -31,9 +31,12 @@
 package ch.artaios.openchemlib.vaadin;
 
 import com.actelion.research.chem.StereoMolecule;
+import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.Unit;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.checkbox.Checkbox;
+import com.vaadin.flow.component.dialog.Dialog;
+import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.H4;
 import com.vaadin.flow.component.html.Hr;
 import com.vaadin.flow.component.html.Span;
@@ -42,6 +45,8 @@ import com.vaadin.flow.component.notification.NotificationVariant;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.select.Select;
+import com.vaadin.flow.component.tabs.Tab;
+import com.vaadin.flow.component.tabs.Tabs;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.Route;
@@ -49,6 +54,8 @@ import com.vaadin.flow.router.RouteAlias;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 
@@ -151,6 +158,8 @@ public class EditorTestView extends VerticalLayout {
                 editable,
                 fragment
         ));
+
+        add(createDialogTabsDemoButton());
 
         // Structure Editor Features
         Span structureEditorButtonsLabel = new Span("Structure Editor Features:");
@@ -269,18 +278,103 @@ public class EditorTestView extends VerticalLayout {
 
         add(new HorizontalLayout(structureViewLayout, reactionViewLayout, structureEditorDialogLayout, reactionEditorDialogLayout));
 
-        // ---
+    }
 
-        add(new Hr());
+    private Button createDialogTabsDemoButton() {
+        Dialog dialog = new Dialog();
+        dialog.setHeaderTitle("Dialog + Tabs Demo");
+        dialog.setWidth("70rem");
+        dialog.setHeight("42rem");
+        dialog.setResizable(true);
+        dialog.setDraggable(true);
 
-        final StructureViewOld structureViewOld = new StructureViewOld(true);
-        structureViewOld.setValue("difH@BAIVUxZ`@@@");
-        structureViewOld.addValueChangeListener(event -> System.out.println("structureViewOld change event: " + structureViewOld.getValue()));
+        VerticalLayout layout = new VerticalLayout();
+        layout.setSizeFull();
+        layout.setPadding(false);
+        layout.setSpacing(false);
+        layout.getStyle().set("min-height", "0");
 
-        VerticalLayout structureViewOldLayout = new VerticalLayout(new H4(structureViewOld.getClass().getSimpleName()), structureViewOld);
-        structureViewOldLayout.setSpacing(false);
-        structureViewOldLayout.setPadding(false);
+        Span hint = new Span("Switch tabs repeatedly to verify that the OpenChemLib components survive detach and reattach inside the dialog.");
+        hint.getStyle().set("padding", "var(--lumo-space-s) var(--lumo-space-m)");
 
-        add(structureViewOldLayout);
+        Tab structureTab = new Tab("Structure View");
+        Tab reactionTab = new Tab("Reaction View");
+        Tab editorTab = new Tab("Structure Editor");
+
+        Tabs tabs = new Tabs(structureTab, reactionTab, editorTab);
+        tabs.setWidthFull();
+
+        Div contentHost = new Div();
+        contentHost.setSizeFull();
+        contentHost.getStyle().set("overflow", "auto");
+        contentHost.getStyle().set("padding", "var(--lumo-space-m)");
+        contentHost.getStyle().set("box-sizing", "border-box");
+
+        Map<Tab, Component> pages = new LinkedHashMap<>();
+        pages.put(structureTab, createDialogPage(
+                "Read-only structure view. Switch away and back to confirm the structure remains visible.",
+                createStructureView()
+        ));
+        pages.put(reactionTab, createDialogPage(
+                "Read-only reaction view. This tab also forces detach/reattach when selected.",
+                createReactionView()
+        ));
+        pages.put(editorTab, createDialogPage(
+                "Editable structure editor inside the same dialog/tab switching flow.",
+                createStructureEditor()
+        ));
+
+        tabs.addSelectedChangeListener(event -> {
+            contentHost.removeAll();
+            contentHost.add(pages.get(event.getSelectedTab()));
+        });
+
+        contentHost.add(pages.get(structureTab));
+
+        layout.add(hint, tabs, contentHost);
+        layout.setFlexGrow(1, contentHost);
+        dialog.add(layout);
+
+        Button closeButton = new Button("Close", event -> dialog.close());
+        dialog.getFooter().add(closeButton);
+
+        return new Button("Open Dialog + Tabs Demo", event -> dialog.open());
+    }
+
+    private Component createDialogPage(String description, Component content) {
+        VerticalLayout page = new VerticalLayout();
+        page.setPadding(false);
+        page.setSpacing(true);
+        page.setWidthFull();
+
+        Span text = new Span(description);
+        text.getStyle().set("max-width", "60rem");
+
+        page.add(text, content);
+        return page;
+    }
+
+    private StructureView createStructureView() {
+        StructureView structureView = new StructureView(false, true);
+        structureView.setValue(ChemUtils.getStereoMolecule("difH@BAIVUxZ`@@@"));
+        structureView.setWidthFull();
+        structureView.setHeight("22rem");
+        return structureView;
+    }
+
+    private ReactionView createReactionView() {
+        ReactionView reactionView = new ReactionView(false, true);
+        reactionView.setValue(ChemUtils.getReaction("gJX@@eKU@@ gGQHDHaImfh@!defH@DAIfUVjj`@"));
+        reactionView.setWidthFull();
+        reactionView.setHeight("22rem");
+        return reactionView;
+    }
+
+    private StructureEditor createStructureEditor() {
+        StructureEditor structureEditor = new StructureEditor(false);
+        structureEditor.setValue(ChemUtils.getStereoMolecule("ffc`P@H`QxNQQJJIJIZJHiSkQSejB`jFjhhaEqFUh@"));
+        structureEditor.setWidthFull();
+        structureEditor.setHeight("22rem");
+        return structureEditor;
     }
 }
