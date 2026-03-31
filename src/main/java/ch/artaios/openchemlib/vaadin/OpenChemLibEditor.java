@@ -210,7 +210,7 @@ public abstract class OpenChemLibEditor<T> extends AbstractSinglePropertyField<O
         return readonlyProperty.get(this);
     }
     protected void setReadonly(boolean readonly) {
-        readonlyProperty.set(this, readonly);
+        // readonlyProperty.set(this, readonly);
         getElement().setAttribute(ATTRIBUTE_READONLY, readonly);
 
         // set draggable only if in readonly (non-drawing mode)
@@ -222,7 +222,6 @@ public abstract class OpenChemLibEditor<T> extends AbstractSinglePropertyField<O
     }
     public void setEditable(boolean editable) {
         editableProperty.set(this, editable);
-        getElement().setAttribute(ATTRIBUTE_EDITABLE, editable);
 
         // enable paste context menu only if editable
         if(pasteMenuItem!=null)
@@ -234,7 +233,7 @@ public abstract class OpenChemLibEditor<T> extends AbstractSinglePropertyField<O
         return Mode.valueOf(modeString.toUpperCase());
     }
     protected void setMode(Mode mode) {
-        modeProperty.set(this, mode.name().toLowerCase());
+//        modeProperty.set(this, mode.name().toLowerCase());
         getElement().setAttribute(ATTRIBUTE_MODE, mode.name().toLowerCase());
     }
 
@@ -242,7 +241,7 @@ public abstract class OpenChemLibEditor<T> extends AbstractSinglePropertyField<O
         return fragmentProperty.get(this);
     }
     public void setFragment(boolean fragment) {
-        fragmentProperty.set(this, fragment);
+//        fragmentProperty.set(this, fragment);
         getElement().setAttribute(ATTRIBUTE_FRAGMENT, fragment);
     }
 
