@@ -52,10 +52,17 @@ public class ChemUtils {
      */
     public static StereoMolecule getStereoMolecule(String idcode) {
         // TODO: check why idcode with no coordinates (but trailing space) appear.
-        idcode = idcode !=null? idcode.trim():null;
+        if (idcode == null || idcode.isBlank()) {
+            return new StereoMolecule();
+        }
+        idcode = idcode.trim();
         StereoMolecule stereoMolecule = new StereoMolecule();
         IDCodeParser parser = new IDCodeParser();
-        parser.parse(stereoMolecule, idcode);
+        try {
+            parser.parse(stereoMolecule, idcode);
+        } catch (Exception e) {
+            return new StereoMolecule();
+        }
         return stereoMolecule;
     }
 
@@ -80,7 +87,14 @@ public class ChemUtils {
      * @return the Reaction
      */
     public static Reaction getReaction(String idcode) {
-        return ReactionEncoder.decode(idcode, true);
+        if (idcode == null || idcode.isBlank()) {
+            return new Reaction();
+        }
+        try {
+            return ReactionEncoder.decode(idcode, true);
+        } catch (Exception e) {
+            return new Reaction();
+        }
     }
 
     /**

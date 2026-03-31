@@ -33,9 +33,87 @@ import OCL from 'openchemlib';
 try {
     console.info("Registering OCL custom tag for Vaadin...");
     const CanvasEditorElement = OCL.registerCustomElement();
+    const pendingStateKey = Symbol('oclPendingState');
+    const originalDescriptors = new Map();
     console.info("Registered OCL custom tag for Vaadin.");
     console.info("Configuring OCL custom tag for Vaadin...");
     // const constr = CanvasEditorElement.prototype.constructor;
+
+    function getPendingState(element) {
+        if (!element[pendingStateKey]) {
+            element[pendingStateKey] = {};
+        }
+        return element[pendingStateKey];
+    }
+
+    function patchProperty(name, fallback = '') {
+        const descriptor = Object.getOwnPropertyDescriptor(CanvasEditorElement.prototype, name);
+        if (!descriptor) {
+            return;
+        }
+        originalDescriptors.set(name, descriptor);
+
+        Object.defineProperty(CanvasEditorElement.prototype, name, {
+            configurable: true,
+            enumerable: descriptor.enumerable ?? true,
+            get() {
+                try {
+                    return descriptor.get.call(this);
+                } catch (error) {
+                    const pending = getPendingState(this);
+                    if (pending[name] !== undefined) {
+                        return pending[name];
+                    }
+                    if (this.hasAttribute(name)) {
+                        const attrValue = this.getAttribute(name);
+                        return attrValue === '' ? true : attrValue;
+                    }
+                    return fallback;
+                }
+            },
+            set(value) {
+                const pending = getPendingState(this);
+                pending[name] = value;
+                try {
+                    descriptor.set.call(this, value);
+                } catch (error) {
+                    if (typeof value === 'boolean') {
+                        if (value) {
+                            this.setAttribute(name, '');
+                        } else {
+                            this.removeAttribute(name);
+                        }
+                    } else if (value === null || value === undefined) {
+                        this.removeAttribute(name);
+                    } else {
+                        this.setAttribute(name, String(value));
+                    }
+                }
+            }
+        });
+    }
+
+    patchProperty('idcode', '');
+    patchProperty('mode', CanvasEditorElement.MODE.MOLECULE);
+    patchProperty('fragment', false);
+    patchProperty('readonly', false);
+
+    const originalConnectedCallback = CanvasEditorElement.prototype.connectedCallback;
+    CanvasEditorElement.prototype.connectedCallback = function() {
+        if (originalConnectedCallback) {
+            originalConnectedCallback.call(this);
+        }
+
+        const pending = this[pendingStateKey];
+        if (pending) {
+            for (const [name, value] of Object.entries(pending)) {
+                const descriptor = originalDescriptors.get(name);
+                if (descriptor?.set) {
+                    descriptor.set.call(this, value);
+                }
+            }
+        }
+    };
 
     CanvasEditorElement.prototype.init = function() {
         this.ondragstart = function(e) {
@@ -339,6 +417,7 @@ try {
             return string;
         } catch (error) {
             console.error(error);
+            return "";
         }
     }
 
@@ -346,8 +425,5 @@ try {
 } catch (error) {
     console.error(error);
 }
-
-
-
 
 
