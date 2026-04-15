@@ -41,7 +41,7 @@ import com.vaadin.flow.shared.Registration;
 import elemental.json.Json;
 import elemental.json.JsonArray;
 
-import java.util.ArrayList;
+import java.util.List;
 
 @Tag("openchemlib-editor")
 @NpmPackage(value = "openchemlib", version = "9.2.0")
@@ -264,7 +264,7 @@ public abstract class OpenChemLibEditor<T> extends AbstractSinglePropertyField<O
         return addListener(AtomSelectionEvent.class, listener);
     }
 
-    public void highlightBondsBackground(ArrayList<Integer> bondIndices, Integer reactantMolId, Integer productMolId) {
+    public void highlightBondsBackground(List<Integer> bondIndices, Integer reactantMolId, Integer productMolId) {
         JsonArray jsonIndices = Json.createArray();
         for (int i = 0; i < bondIndices.size(); i++) {
             jsonIndices.set(i, bondIndices.get(i));
@@ -272,7 +272,7 @@ public abstract class OpenChemLibEditor<T> extends AbstractSinglePropertyField<O
         getElement().callJsFunction("highlightBondsBackground", jsonIndices, reactantMolId, productMolId);
     }
 
-    public void highlightBondsForeground(ArrayList<Integer> bondIndices, Integer reactantMolId, Integer productMolId) {
+    public void highlightBondsForeground(List<Integer> bondIndices, Integer reactantMolId, Integer productMolId) {
         JsonArray jsonIndices = Json.createArray();
         for (int i = 0; i < bondIndices.size(); i++) {
             jsonIndices.set(i, bondIndices.get(i));
