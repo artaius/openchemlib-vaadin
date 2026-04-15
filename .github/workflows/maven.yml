@@ -22,10 +22,10 @@ jobs:
         name: Checkout sources
         uses: actions/checkout@v4
       - id: setup_jdk
-        name: Set up JDK 17
+        name: Set up JDK 21
         uses: actions/setup-java@v4
         with:
-          java-version: '17'
+          java-version: '21'
           distribution: 'temurin'
           cache: maven
           server-id: central # Value of the distributionManagement/repository/id field of the pom.xml
@@ -39,7 +39,6 @@ jobs:
           mvn \
             --no-transfer-progress \
             --batch-mode \
-            --activate-profiles production \
             -DskipTests=true \
             package
       - id: extract_version
