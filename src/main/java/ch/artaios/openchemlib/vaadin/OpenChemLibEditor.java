@@ -38,8 +38,6 @@ import com.vaadin.flow.component.dependency.JsModule;
 import com.vaadin.flow.component.dependency.NpmPackage;
 import com.vaadin.flow.function.SerializableBiFunction;
 import com.vaadin.flow.shared.Registration;
-import elemental.json.Json;
-import elemental.json.JsonArray;
 
 import java.util.List;
 
@@ -265,19 +263,11 @@ public abstract class OpenChemLibEditor<T> extends AbstractSinglePropertyField<O
     }
 
     public void highlightBondsBackground(List<Integer> bondIndices, Integer reactantMolId, Integer productMolId) {
-        JsonArray jsonIndices = Json.createArray();
-        for (int i = 0; i < bondIndices.size(); i++) {
-            jsonIndices.set(i, bondIndices.get(i));
-        }
-        getElement().callJsFunction("highlightBondsBackground", jsonIndices, reactantMolId, productMolId);
+        getElement().callJsFunction("highlightBondsBackground", bondIndices, reactantMolId, productMolId);
     }
 
     public void highlightBondsForeground(List<Integer> bondIndices, Integer reactantMolId, Integer productMolId) {
-        JsonArray jsonIndices = Json.createArray();
-        for (int i = 0; i < bondIndices.size(); i++) {
-            jsonIndices.set(i, bondIndices.get(i));
-        }
-        getElement().callJsFunction("highlightBondsForeground", jsonIndices, reactantMolId, productMolId);
+        getElement().callJsFunction("highlightBondsForeground", bondIndices, reactantMolId, productMolId);
     }
 
     public void clearHighlights(Integer reactantMolId, Integer productMolId) {
